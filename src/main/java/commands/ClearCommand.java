@@ -21,11 +21,20 @@ public class ClearCommand implements Command {
             e.getTextChannel().sendMessage(error.setDescription("Bitte Zahl der zu löschenden Nachrichten angeben!").build()).queue();
         }
 
+        MessageHistory h = new MessageHistory(e.getTextChannel());
+        List<Message> mgs;
+
+        if(args.equals("all")) {
+            e.getMessage().delete().queue();
+
+            mgs = h.retrievePast(999999999).complete();
+            e.getTextChannel().deleteMessages(mgs).queue();
+            Message msg = e.getTextChannel().sendMessage(done.setDescription("Chat cleared.").build()).complete();
+        }
+
         int numb = Integer.parseInt(args[0]);
 
         if (numb > 1 && numb <= 100) {
-            MessageHistory h = new MessageHistory(e.getTextChannel());
-            List<Message> mgs;
 
             e.getMessage().delete().queue();
 
