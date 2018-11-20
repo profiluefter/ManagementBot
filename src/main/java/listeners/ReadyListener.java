@@ -12,7 +12,8 @@ public class ReadyListener extends ListenerAdapter {
         String startMSG = "HI :wave: ";
 
         for (Guild g : e.getJDA().getGuilds()) {
-            g.getTextChannels().get(0).sendMessage(new EmbedBuilder().setColor(Color.GREEN).setDescription(startMSG).build()).queue();
+            if(false)
+                g.getTextChannels().get(0).sendMessage(new EmbedBuilder().setColor(Color.GREEN).setDescription(startMSG).build()).queue();
         }
     }
 }

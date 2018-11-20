@@ -7,7 +7,8 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class ShutdownListener extends ListenerAdapter {
     public void onShutdown(ShutdownEvent e) {
         for (Guild g : e.getJDA().getGuilds()) {
-            g.getTextChannels().get(0).sendMessage("Bye :wave:").queue();
+            if(false)
+                g.getTextChannels().get(0).sendMessage("Bye :wave:").queue();
         }
     }
 }
