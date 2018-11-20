@@ -44,6 +44,7 @@ public class clearChat implements Command {
 
         } else {
 
+            e.getMessage().delete().queue();
             e.getTextChannel().sendMessage(error.setDescription("Bitte Zahl zwischen 2 und 100 der zu löschenden Nachrichten angeben!").build()).queue();
         }
 

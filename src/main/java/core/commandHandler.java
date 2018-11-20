@@ -6,10 +6,10 @@ import java.util.HashMap;
 
 public class commandHandler {
 
-    public static final commandParser p = new commandParser();
+    public static final CommandParser p = new CommandParser();
     public static HashMap<String, Command> commands = new HashMap<String, Command>();
 
-    public static void handleCommands(commandParser.commandContainer cmd) {
+    public static void handleCommands(CommandParser.commandContainer cmd) {
 
         if(commands.containsKey(cmd.invoke)) {
 
