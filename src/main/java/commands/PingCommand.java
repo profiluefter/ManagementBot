@@ -9,7 +9,6 @@ public class PingCommand implements Command {
 
     public void actions(String[] args, MessageReceivedEvent e) {
         e.getTextChannel().sendMessage("Pong!").queue();
-        e.getTextChannel().sendMessage(e.getAuthor().getJDA().getPing() + "").queue();
     }
 
     public void executed(boolean success, MessageReceivedEvent e) {
