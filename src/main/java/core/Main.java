@@ -17,7 +17,12 @@ public class Main {
     private static JDABuilder b = new JDABuilder(AccountType.BOT);
 
     public static void main(String[] args) {
-        b.setToken("NTE0MTA2NTI1MTA3NjE3ODE0.DtRu1A.2E7D8fe98Afqxxvl7ZWNvp8PFek");
+        String token = System.getProperty("discord.token");
+        if(token == null) {
+            throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token!");
+        }
+
+        b.setToken(token);
         b.setAutoReconnect(true);
         b.setStatus(OnlineStatus.ONLINE);
 
