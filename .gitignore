@@ -1,0 +1,3 @@
+#IntelliJ settings shouldn't be committed
+.idea/
+ManagementBot.iml

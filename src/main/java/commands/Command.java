@@ -3,10 +3,11 @@ package commands;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public interface Command {
-
     boolean called(String[] args, MessageReceivedEvent e);
-    void acions(String[] args, MessageReceivedEvent e);
-    void executed(boolean success, MessageReceivedEvent e);
-    String help();
 
+    void actions(String[] args, MessageReceivedEvent e);
+
+    void executed(boolean success, MessageReceivedEvent e);
+
+    String help();
 }
