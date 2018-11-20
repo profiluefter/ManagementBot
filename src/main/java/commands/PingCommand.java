@@ -15,6 +15,11 @@ public class PingCommand implements Command {
 
     }
 
+    @Override
+    public String getName() {
+        return "ping";
+    }
+
     public String help() {
         return null;
     }

@@ -43,6 +43,11 @@ public class ClearCommand implements Command {
 
     }
 
+    @Override
+    public String getName() {
+        return "clear";
+    }
+
     public String help() {
         return null;
     }

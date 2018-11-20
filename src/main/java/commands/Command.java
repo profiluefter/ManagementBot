@@ -9,5 +9,7 @@ public interface Command {
 
     void executed(boolean success, MessageReceivedEvent e);
 
+    String getName();
+
     String help();
 }

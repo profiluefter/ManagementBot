@@ -1,6 +1,7 @@
 package core;
 
 import commands.ClearCommand;
+import commands.Command;
 import commands.PingCommand;
 import listeners.CommandListener;
 import listeners.ReadyListener;
@@ -9,8 +10,13 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.reflections.Reflections;
 
 import javax.security.auth.login.LoginException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 public class Main {
 
@@ -33,14 +39,29 @@ public class Main {
     }
 
     private static void addCommands() {
-        CommandHandler.commands.put("ping", new PingCommand());
-        CommandHandler.commands.put("clear", new ClearCommand());
+        Reflections reflections = new Reflections("commands");
+        Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
+        for (Class<? extends Command> command : commands) {
+            try {
+                Command instance = command.getConstructor().newInstance();
+                CommandHandler.commands.put(instance.getName(),instance);
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private static void addListeners() {
-        b.addEventListener(new ReadyListener());
-        b.addEventListener(new ShutdownListener());
-        b.addEventListener(new CommandListener());
+        Reflections reflections = new Reflections("listeners");
+        Set<Class<? extends ListenerAdapter>> listeners = reflections.getSubTypesOf(ListenerAdapter.class);
+        for (Class<? extends ListenerAdapter> listener : listeners) {
+            try {
+                ListenerAdapter instance = listener.getConstructor().newInstance();
+                b.addEventListener(instance);
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

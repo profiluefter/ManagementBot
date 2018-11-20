@@ -7,6 +7,18 @@
     <groupId>ManagementBot</groupId>
     <artifactId>ManagementBot</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <repositories>
         <repository>
@@ -26,6 +38,11 @@
             <groupId>fr.bmartel</groupId>
             <artifactId>jspeedtest</artifactId>
             <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
         <dependency>
             <groupId>com.moandjiezana.toml</groupId>
