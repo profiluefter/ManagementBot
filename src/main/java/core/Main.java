@@ -1,11 +1,6 @@
 package core;
 
-import commands.ClearCommand;
 import commands.Command;
-import commands.PingCommand;
-import listeners.CommandListener;
-import listeners.ReadyListener;
-import listeners.ShutdownListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -14,7 +9,6 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.reflections.Reflections;
 
 import javax.security.auth.login.LoginException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
