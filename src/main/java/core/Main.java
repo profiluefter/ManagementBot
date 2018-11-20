@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-
+//Sicker Token
 
         b.setToken("NTE0MTA2NTI1MTA3NjE3ODE0.DtRu1A.2E7D8fe98Afqxxvl7ZWNvp8PFek");
         b.setAutoReconnect(true);
