@@ -1,7 +1,7 @@
 package core;
 
-import listeners.readyListener;
-import listeners.shutdownListener;
+import listeners.ReadyListener;
+import listeners.ShutdownListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -34,8 +34,8 @@ public class Main {
 
     public static void addListeners() {
 
-        b.addEventListener(new readyListener());
-        b.addEventListener(new shutdownListener());
+        b.addEventListener(new ReadyListener());
+        b.addEventListener(new ShutdownListener());
 
     }
 

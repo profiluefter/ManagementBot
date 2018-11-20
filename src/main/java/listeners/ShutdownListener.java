@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ShutdownEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class shutdownListener extends ListenerAdapter {
+public class ShutdownListener extends ListenerAdapter {
 
     public void onShutdown(ShutdownEvent e) {
 
