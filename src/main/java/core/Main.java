@@ -17,7 +17,7 @@ public class Main {
     private static JDABuilder b = new JDABuilder(AccountType.BOT);
 
     public static void main(String[] args) {
-        String token = System.getProperty("discord.token");
+        String token = System.getenv("discord.token");
         if(token == null) {
             throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token!");
         }
