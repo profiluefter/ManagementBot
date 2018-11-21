@@ -1,5 +1,6 @@
 package commands;
 
+import localisation.Strings;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class PingCommand implements Command {
@@ -8,7 +9,7 @@ public class PingCommand implements Command {
     }
 
     public void actions(String[] args, MessageReceivedEvent e) {
-        e.getTextChannel().sendMessage("Pong!").queue();
+        e.getTextChannel().sendMessage(Strings.getString("ping.msg", Strings.Lang.EN)).queue();
     }
 
     public void executed(boolean success, MessageReceivedEvent e) {

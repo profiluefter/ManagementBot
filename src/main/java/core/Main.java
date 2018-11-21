@@ -1,6 +1,7 @@
 package core;
 
 import commands.Command;
+import localisation.Strings;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -20,12 +21,12 @@ public class Main {
             throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token!");
         }
 
-
 	    JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
         jdaBuilder.setToken(token);
         jdaBuilder.setAutoReconnect(true);
         jdaBuilder.setStatus(OnlineStatus.ONLINE);
 
+        Strings.init();
 	    addCommands();
 	    addListeners(jdaBuilder);
 

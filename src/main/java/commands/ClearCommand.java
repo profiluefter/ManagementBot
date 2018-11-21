@@ -1,5 +1,6 @@
 package commands;
 
+import localisation.Strings;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
@@ -20,39 +21,38 @@ public class ClearCommand implements Command {
 
     public void actions(String[] args, MessageReceivedEvent e) {
         if (args.length < 1) {
-            e.getTextChannel().sendMessage(error.setDescription("Bitte Zahl der zu löschenden Nachrichten angeben!").build()).queue();
+            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.missingCount", Strings.Lang.EN)).build()).queue();
         }
 
-             MessageHistory h = new MessageHistory(e.getTextChannel());
-             List<Message> mgs;
+        MessageHistory h = new MessageHistory(e.getTextChannel());
+        List<Message> mgs;
 
 
-            int numb = Integer.parseInt(args[0]);
+        int numb = Integer.parseInt(args[0]);
 
-            if (numb > 1 && numb <= 100) {
-
-
-                e.getMessage().delete().queue();
-
-                mgs = h.retrievePast(numb).complete();
-                e.getTextChannel().deleteMessages(mgs).queue();
-
-                final Message msg = e.getTextChannel().sendMessage(done.setDescription("Chat cleared.").build()).complete();
-
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        msg.delete().queue();
-                    }
-                }, 3000);
+        if (numb > 1 && numb <= 100) {
 
 
+            e.getMessage().delete().queue();
 
-            } else {
-                e.getMessage().delete().queue();
-                e.getTextChannel().sendMessage(error.setDescription("Bitte Zahl zwischen 2 und 100 der zu löschenden Nachrichten angeben!").build()).queue();
-            }
+            mgs = h.retrievePast(numb).complete();
+            e.getTextChannel().deleteMessages(mgs).queue();
+
+            final Message msg = e.getTextChannel().sendMessage(done.setDescription(Strings.getString("clear.success", Strings.Lang.EN)).build()).complete();
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    msg.delete().queue();
+                }
+            }, 3000);
+
+
+        } else {
+            e.getMessage().delete().queue();
+            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.countOutOfRange", Strings.Lang.EN)).build()).queue();
         }
+    }
 
     public void executed(boolean success, MessageReceivedEvent e) {
 
