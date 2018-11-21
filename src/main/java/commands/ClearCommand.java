@@ -8,8 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class ClearCommand implements Command {
     private EmbedBuilder error = new EmbedBuilder().setColor(Color.RED);
@@ -20,37 +19,27 @@ public class ClearCommand implements Command {
     }
 
     public void actions(String[] args, MessageReceivedEvent e) {
+        e.getMessage().delete().queue();
+
         if (args.length < 1) {
-            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.missingCount", Strings.Lang.EN)).build()).queue();
+            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.missingCount", Strings.Lang.EN)).build()).complete().delete().queueAfter(5, TimeUnit.SECONDS);
         }
 
-        MessageHistory h = new MessageHistory(e.getTextChannel());
-        List<Message> mgs;
-
-
-        int numb = Integer.parseInt(args[0]);
+        int numb;
+        try {
+            numb = Integer.parseInt(args[0]);
+        } catch (NumberFormatException ex) {
+            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.countOutOfRange", Strings.Lang.EN)).build()).complete().delete().queueAfter(5,TimeUnit.SECONDS);
+            return;
+        }
 
         if (numb > 1 && numb <= 100) {
-
-
-            e.getMessage().delete().queue();
-
-            mgs = h.retrievePast(numb).complete();
+            List<Message> mgs = new MessageHistory(e.getTextChannel()).retrievePast(numb).complete();
             e.getTextChannel().deleteMessages(mgs).queue();
 
-            final Message msg = e.getTextChannel().sendMessage(done.setDescription(Strings.getString("clear.success", Strings.Lang.EN)).build()).complete();
-
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    msg.delete().queue();
-                }
-            }, 3000);
-
-
+            e.getTextChannel().sendMessage(done.setDescription(Strings.getString("clear.success", Strings.Lang.EN)).build()).complete().delete().queueAfter(5,TimeUnit.SECONDS);
         } else {
-            e.getMessage().delete().queue();
-            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.countOutOfRange", Strings.Lang.EN)).build()).queue();
+            e.getTextChannel().sendMessage(error.setDescription(Strings.getString("clear.countOutOfRange", Strings.Lang.EN)).build()).complete().delete().queueAfter(5,TimeUnit.SECONDS);
         }
     }
 
