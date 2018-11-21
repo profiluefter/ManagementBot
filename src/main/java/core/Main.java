@@ -14,29 +14,33 @@ import java.util.Set;
 
 public class Main {
 
-    private static JDABuilder b = new JDABuilder(AccountType.BOT);
-
     public static void main(String[] args) {
         String token = System.getenv("discord.token");
         if(token == null) {
             throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token!");
         }
 
-        b.setToken(token);
-        b.setAutoReconnect(true);
-        b.setStatus(OnlineStatus.ONLINE);
 
-        addListeners();
-        addCommands();
+	    JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
+        jdaBuilder.setToken(token);
+        jdaBuilder.setAutoReconnect(true);
+        jdaBuilder.setStatus(OnlineStatus.ONLINE);
+
+	    addCommands();
+	    addListeners(jdaBuilder);
 
         try {
-            JDA jda = b.build();
+            JDA jda = jdaBuilder.build();
         } catch (LoginException e) {
             e.printStackTrace();
         }
 
     }
 
+	/**
+	 * Searches the package commands for Commands
+	 * and adds them to the CommandHandler
+	 */
     private static void addCommands() {
         Reflections reflections = new Reflections("commands");
         Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
@@ -50,13 +54,18 @@ public class Main {
         }
     }
 
-    private static void addListeners() {
+	/**
+	 * Searches the package listeners for Listeners
+	 * and registers them to the provided JDABuilder
+	 * @param jdaBuilder the instance to register the listeners to
+	 */
+    private static void addListeners(JDABuilder jdaBuilder) {
         Reflections reflections = new Reflections("listeners");
         Set<Class<? extends ListenerAdapter>> listeners = reflections.getSubTypesOf(ListenerAdapter.class);
         for (Class<? extends ListenerAdapter> listener : listeners) {
             try {
                 ListenerAdapter instance = listener.getConstructor().newInstance();
-                b.addEventListener(instance);
+                jdaBuilder.addEventListener(instance);
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
