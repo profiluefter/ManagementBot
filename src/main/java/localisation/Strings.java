@@ -7,6 +7,9 @@ public class Strings {
     private static Properties enLocale = new Properties();
     private static Properties deLocale = new Properties();
 
+    /**
+     * Loads the strings from the files
+     */
     public static void init() {
         try {
             enLocale.load(Strings.class.getResourceAsStream("../strings_en.properties"));
@@ -16,6 +19,11 @@ public class Strings {
         }
     }
 
+    /**
+     * @param key The key of the String to return
+     * @param language The language of the desired String
+     * @return The requested String
+     */
     public static String getString(String key, Lang language) {
         return (language == Lang.EN ? enLocale : deLocale).getProperty(key);
     }

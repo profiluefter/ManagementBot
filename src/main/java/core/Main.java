@@ -31,8 +31,8 @@ public class Main {
 	    addListeners(jdaBuilder);
 
         try {
-            JDA jda = jdaBuilder.build();
-        } catch (LoginException e) {
+            JDA jda = jdaBuilder.build().awaitReady();
+        } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
 
