@@ -1,21 +1,34 @@
 package core;
 
 import commands.Command;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import util.STATIC;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class CommandHandler {
-    static HashMap<String, Command> commands = new HashMap<String, Command>();
+	private static Map<String, Command> commands = new HashMap<>();
 
-    public static void handleCommands(CommandParser.CommandContainer cmd) {
-        if (commands.containsKey(cmd.invoke)) {
-            boolean safe = commands.get(cmd.invoke).called(cmd.args, cmd.e);
-            if (!safe) {
-                commands.get(cmd.invoke).actions(cmd.args, cmd.e);
-                commands.get(cmd.invoke).executed(safe, cmd.e);
-            } else {
-                commands.get(cmd.invoke).executed(false, cmd.e);
-            }
-        }
-    }
+	public static void handle(MessageReceivedEvent event) {
+		String rawMessage = event.getMessage().getContentRaw();
+		List<String> split = Arrays.asList(rawMessage.split(" "));
+		String invoke = split.get(0).replaceFirst(STATIC.PREFIX,"");
+
+		List<String> args;
+		if(split.size() > 1)
+			args = split.subList(1,split.size());
+		else
+			args = new ArrayList<>();
+
+		Command command = commands.get(invoke);
+		if(command == null) {
+			//TODO: Call help command
+		} else {
+			command.execute(args,event);
+		}
+	}
+
+	static void registerCommand(Command command) {
+		commands.put(command.getName(),command);
+	}
 }

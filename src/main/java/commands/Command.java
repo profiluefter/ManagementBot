@@ -2,14 +2,22 @@ package commands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.List;
+
 public interface Command {
-    boolean called(String[] args, MessageReceivedEvent e);
+	/**
+	 * @param args The arguments provided when called
+	 * @param event The event of the message
+	 */
+	void execute(List<String> args, MessageReceivedEvent event);
 
-    void actions(String[] args, MessageReceivedEvent e);
+	/**
+	 * @return The name of the Command as it would be called
+	 */
+	String getName();
 
-    void executed(boolean success, MessageReceivedEvent e);
-
-    String getName();
-
-    String help();
+	/**
+	 * @return A short description of the command and its usage
+	 */
+	String help();
 }

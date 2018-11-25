@@ -23,8 +23,6 @@ public class Main {
 
 	    JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
         jdaBuilder.setToken(token);
-        jdaBuilder.setAutoReconnect(true);
-        jdaBuilder.setStatus(OnlineStatus.ONLINE);
 
         Strings.init();
 	    addCommands();
@@ -48,7 +46,7 @@ public class Main {
         for (Class<? extends Command> command : commands) {
             try {
                 Command instance = command.getConstructor().newInstance();
-                CommandHandler.commands.put(instance.getName(),instance);
+	            CommandHandler.registerCommand(instance);
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }

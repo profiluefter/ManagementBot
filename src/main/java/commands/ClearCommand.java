@@ -14,21 +14,18 @@ import static localisation.Strings.getString;
 
 public class ClearCommand implements Command {
 
-	public boolean called(String[] args, MessageReceivedEvent e) {
-		return false;
-	}
-
-	public void actions(String[] args, MessageReceivedEvent e) {
+	@Override
+	public void execute(List<String> args, MessageReceivedEvent e) {
 		e.getMessage().delete().queue();
 
-		if (args.length < 1) {
+		if (args.size() < 1) {
 			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.RED, getString("error", EN), getString(
 					"clear.missingCount", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 		}
 
 		int numb;
 		try {
-			numb = Integer.parseInt(args[0]);
+			numb = Integer.parseInt(args.get(0));
 		} catch (NumberFormatException ex) {
 			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.RED, getString("error", EN), getString(
 					"clear.countOutOfRange", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
@@ -45,10 +42,6 @@ public class ClearCommand implements Command {
 			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.GREEN, getString("error", EN), getString(
 					"clear.countOutOfRange", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 		}
-	}
-
-	public void executed(boolean success, MessageReceivedEvent e) {
-
 	}
 
 	@Override

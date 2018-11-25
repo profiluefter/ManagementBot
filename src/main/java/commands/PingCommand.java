@@ -3,17 +3,12 @@ package commands;
 import localisation.Strings;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.List;
+
 public class PingCommand implements Command {
-    public boolean called(String[] args, MessageReceivedEvent e) {
-        return false;
-    }
-
-    public void actions(String[] args, MessageReceivedEvent e) {
-        e.getTextChannel().sendMessage(Strings.getString("ping.msg", Strings.Lang.EN)).queue();
-    }
-
-    public void executed(boolean success, MessageReceivedEvent e) {
-
+    @Override
+    public void execute(List<String> args, MessageReceivedEvent event) {
+        event.getTextChannel().sendMessage(Strings.getString("ping.msg", Strings.Lang.EN)).queue();
     }
 
     @Override
