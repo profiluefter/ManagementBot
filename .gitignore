@@ -2,3 +2,4 @@
 .idea/
 ManagementBot.iml
 target/
+db.sqlite

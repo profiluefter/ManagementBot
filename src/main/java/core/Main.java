@@ -5,9 +5,9 @@ import localisation.Strings;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.reflections.Reflections;
+import sql.Database;
 
 import javax.security.auth.login.LoginException;
 import java.lang.reflect.InvocationTargetException;
@@ -24,6 +24,7 @@ public class Main {
 	    JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
         jdaBuilder.setToken(token);
 
+	    Database.init();
         Strings.init();
 	    addCommands();
 	    addListeners(jdaBuilder);
