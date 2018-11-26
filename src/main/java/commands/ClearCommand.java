@@ -16,10 +16,8 @@ public class ClearCommand implements Command {
 
 	@Override
 	public void execute(List<String> args, MessageReceivedEvent e) {
-		e.getMessage().delete().queue();
-
 		if (args.size() < 1) {
-			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.RED, getString("error", EN), getString(
+			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.RED, getString("error", EN), getString(
 					"clear.missingCount", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 		}
 
@@ -27,7 +25,7 @@ public class ClearCommand implements Command {
 		try {
 			numb = Integer.parseInt(args.get(0));
 		} catch (NumberFormatException ex) {
-			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.RED, getString("error", EN), getString(
+			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.RED, getString("error", EN), getString(
 					"clear.countOutOfRange", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 			return;
 		}
@@ -36,10 +34,10 @@ public class ClearCommand implements Command {
 			List<Message> mgs = new MessageHistory(e.getTextChannel()).retrievePast(numb).complete();
 			e.getTextChannel().deleteMessages(mgs).queue();
 
-			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.GREEN, getString("success", EN), getString(
+			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.GREEN, getString("success", EN), getString(
 					"clear.success", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 		} else {
-			e.getTextChannel().sendMessage(JDAUtil.sendEmbed(Color.GREEN, getString("error", EN), getString(
+			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.GREEN, getString("error", EN), getString(
 					"clear.countOutOfRange", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 		}
 	}

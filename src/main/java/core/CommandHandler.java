@@ -24,6 +24,7 @@ public class CommandHandler {
 		if(command == null) {
 			//TODO: Call help command
 		} else {
+			event.getMessage().delete().queue();
 			command.execute(args,event);
 		}
 	}

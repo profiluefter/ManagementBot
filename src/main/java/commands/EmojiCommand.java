@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static util.JDAUtil.sendEmbed;
+import static util.JDAUtil.generateEmbed;
 
 //TODO: Clean this mess up
 public class EmojiCommand implements Command {
@@ -56,7 +56,7 @@ public class EmojiCommand implements Command {
 
 	private void createEmoji(List<String> args, MessageReceivedEvent event, byte[] bytes) {
 		event.getGuild().getController().createEmote(args.get(0), Icon.from(bytes)).queue(emote ->
-				event.getChannel().sendMessage(sendEmbed(Color.GREEN,
+				event.getChannel().sendMessage(generateEmbed(Color.GREEN,
 						Strings.getString("success", Strings.Lang.EN),
 						Strings.getString("emoji.success", Strings.Lang.EN)
 				)).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS)));
@@ -81,7 +81,7 @@ public class EmojiCommand implements Command {
 	}
 
 	private void reportException(MessageReceivedEvent event, String s, String s2) {
-		event.getChannel().sendMessage(sendEmbed(Color.RED,
+		event.getChannel().sendMessage(generateEmbed(Color.RED,
 				Strings.getString(s, Strings.Lang.EN),
 				Strings.getString(s2, Strings.Lang.EN)))
 				.queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));

@@ -1,11 +1,14 @@
 package sql;
 
 import localisation.Strings;
+import org.slf4j.LoggerFactory;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+//TODO: Documentation
 public class User {
 	private static HashMap<Long,User> loadedUsers = new HashMap<>();
 
@@ -17,13 +20,18 @@ public class User {
 		this.language = language;
 	}
 
+	@Override
+	public String toString() {
+		return "ID=" + discordid + " Lang="+language;
+	}
+
 	public static User loadUser(long discordid) {
 		if(loadedUsers.containsKey(discordid)) {
 			return loadedUsers.get(discordid);
 		} else {
 			try {
 				ResultSet set = Database.loadUser(discordid);
-				User user = new User(discordid, Strings.parseLang(set.getString("language")));
+				User user = new User(discordid, Strings.parseLang(set.getFetchSize() == 1 ? set.getString("language") : "EN"));
 				loadedUsers.put(discordid, user);
 				return user;
 			}catch(SQLException e) {
@@ -32,21 +40,8 @@ public class User {
 		}
 	}
 
-	static void registerHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread(User::shutdown));
-	}
-
-	private static void shutdown() {
-		loadedUsers.forEach((aLong, user) -> Database.saveUser(user));
-	}
-
 	public long getDiscordid() {
 		return discordid;
-	}
-
-	public User setDiscordid(long discordid) {
-		this.discordid = discordid;
-		return this;
 	}
 
 	public Strings.Lang getLanguage() {
@@ -55,6 +50,7 @@ public class User {
 
 	public User setLanguage(Strings.Lang language) {
 		this.language = language;
+		Database.saveUser(this);
 		return this;
 	}
 }

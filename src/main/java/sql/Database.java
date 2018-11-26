@@ -1,13 +1,16 @@
 package sql;
 
 import localisation.Strings;
+import org.slf4j.LoggerFactory;
 
+import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 
+//TODO: Documentation
 public class Database {
 	private static Connection sql;
 
@@ -29,17 +32,17 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("UPDATE users SET language=? WHERE 'discord-id'=?");
-			statement.setString(1, Strings.parseLang(user.getLanguage()));
-			statement.setLong(2,user.getDiscordid());
-			statement.executeUpdate();
+			PreparedStatement statement = sql.prepareStatement("INSERT OR REPLACE INTO users ('discord-id', language) VALUES (?,?)");
+			statement.setLong(1,user.getDiscordid());
+			statement.setString(2, Strings.parseLang(user.getLanguage()));
+			int affectedRows = statement.executeUpdate();
+			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordid() + "! Affected " + affectedRows + " rows!");
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public static void init() {
-		User.registerHook();
 		try {
 			sql = DriverManager.getConnection("jdbc:sqlite:db.sqlite");
 			runDefaultSQL();
@@ -52,11 +55,13 @@ public class Database {
 		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		String sqliteCommand = String.join("\n", Files.readAllLines(Paths.get(Database.class.getResource("/sqlite" +
-				"-schema.sql").toURI())));
+		String sqliteCommand = String.join("\n",
+				Files.readAllLines(Paths.get(Database.class.getResource("/sqlite-schema.sql").toURI()))
+		);
 
+		LoggerFactory.getLogger(Database.class).info("Running default SQL...");
 		Statement statement = sql.createStatement();
 		statement.execute(sqliteCommand);
-
+		LoggerFactory.getLogger(Database.class).info("Successfully ran default SQL!");
 	}
 }
