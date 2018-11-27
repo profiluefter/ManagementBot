@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.STATIC;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class CommandHandler {
 	private static Map<String, Command> commands = new HashMap<>();
@@ -20,16 +21,16 @@ public class CommandHandler {
 		else
 			args = new ArrayList<>();
 
-		Command command = commands.get(invoke);
-		if(command == null) {
-			//TODO: Call help command
-		} else {
-			event.getMessage().delete().queue();
-			command.execute(args,event);
-		}
+		Command command = commands.getOrDefault(invoke,commands.get("help"));
+		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
+		command.execute(args,event);
 	}
 
 	static void registerCommand(Command command) {
 		commands.put(command.getName(),command);
+	}
+
+	public static Map<String, Command> getCommands() {
+		return commands;
 	}
 }

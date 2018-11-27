@@ -28,14 +28,14 @@ public class JDAUtil {
 	}
 
 	public static void sendMessage(Message message, TextChannel channel) {
-		channel.sendMessage(message).queue(message1 -> message1.delete().queueAfter(5,TimeUnit.SECONDS));
+		channel.sendMessage(message).queue(message1 -> message1.delete().queueAfter(1,TimeUnit.MINUTES));
 	}
 
 	public static void sendMessage(MessageEmbed message, TextChannel channel) {
-		channel.sendMessage(message).queue(message1 -> message1.delete().queueAfter(5,TimeUnit.SECONDS));
+		channel.sendMessage(message).queue(message1 -> message1.delete().queueAfter(1,TimeUnit.MINUTES));
 	}
 
 	public static void sendMessage(CharSequence message, TextChannel channel) {
-		channel.sendMessage(message).queue(message1 -> message1.delete().queueAfter(5,TimeUnit.SECONDS));
+		channel.sendMessage(message).queue(message1 -> message1.delete().queueAfter(1,TimeUnit.MINUTES));
 	}
 }

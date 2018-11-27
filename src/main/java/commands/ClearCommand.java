@@ -1,5 +1,6 @@
 package commands;
 
+import localisation.Strings;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -47,7 +48,7 @@ public class ClearCommand implements Command {
 		return "clear";
 	}
 
-	public String help() {
-		return null;
+	public String getHelp() {
+		return Strings.getString("clear.help",EN);
 	}
 }

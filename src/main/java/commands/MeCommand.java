@@ -62,7 +62,7 @@ public class MeCommand implements Command {
 	}
 
 	@Override
-	public String help() {
-		return null;
+	public String getHelp() {
+		return Strings.getString("me.help", Strings.Lang.EN);
 	}
 }

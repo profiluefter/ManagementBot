@@ -1,6 +1,7 @@
 package commands;
 
 import localisation.Strings;
+import static localisation.Strings.Lang.EN;
 import net.dv8tion.jda.core.entities.Icon;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static util.JDAUtil.generateEmbed;
+import static util.JDAUtil.sendEmbedWithLocalisation;
 
 //TODO: Clean this mess up
 public class EmojiCommand implements Command {
@@ -51,15 +53,11 @@ public class EmojiCommand implements Command {
 		} else {
 			reportException(event, "error", "emoji.syntax");
 		}
-		event.getMessage().delete().queue();
 	}
 
 	private void createEmoji(List<String> args, MessageReceivedEvent event, byte[] bytes) {
 		event.getGuild().getController().createEmote(args.get(0), Icon.from(bytes)).queue(emote ->
-				event.getChannel().sendMessage(generateEmbed(Color.GREEN,
-						Strings.getString("success", Strings.Lang.EN),
-						Strings.getString("emoji.success", Strings.Lang.EN)
-				)).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS)));
+				sendEmbedWithLocalisation(Color.GREEN, "success", "emoji.success", event.getTextChannel()));
 	}
 
 	private BufferedImage scaleImage(BufferedImage src) {
@@ -93,7 +91,7 @@ public class EmojiCommand implements Command {
 	}
 
 	@Override
-	public String help() {
-		return null;
+	public String getHelp() {
+		return Strings.getString("emoji.help",EN);
 	}
 }

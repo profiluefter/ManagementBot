@@ -19,5 +19,5 @@ public interface Command {
 	/**
 	 * @return A short description of the command and its usage
 	 */
-	String help();
+	String getHelp();
 }
