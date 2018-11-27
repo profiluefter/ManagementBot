@@ -9,8 +9,9 @@ import static util.Strings.Lang.EN;
 
 public class PingCommand implements Command {
     @Override
-    public void execute(List<String> args, MessageReceivedEvent event) {
+    public boolean execute(List<String> args, MessageReceivedEvent event) {
         event.getTextChannel().sendMessage(Strings.getString("ping.msg", Strings.Lang.EN).replaceAll("\\[VALUE]",Long.toString(event.getJDA().getPing()))).queue();
+        return false;
     }
 
     @Override

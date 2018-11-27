@@ -14,7 +14,7 @@ import static util.JDAUtil.sendMessage;
 
 public class HelpCommand implements Command {
 	@Override
-	public void execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		List<MessageEmbed.Field> fields = new ArrayList<>();
 		for(Command command : CommandHandler.getCommands().values()) {
 			fields.add(new MessageEmbed.Field(command.getName(),
@@ -26,6 +26,7 @@ public class HelpCommand implements Command {
 				new EmbedBuilder().setTitle(Strings.getString("help.title", Strings.Lang.EN)).setColor(Color.BLUE);
 		fields.forEach(embedBuilder::addField);
 		sendMessage(embedBuilder.build(), event.getTextChannel());
+		return false;
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import static util.Strings.Lang.EN;
 
 //TODO: Clean this mess up
 public class EmojiCommand implements Command {
-	public void execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		if(event.getMessage().getAttachments().size() == 0 && args.size() == 2) {
 			try {
 				InputStream stream = new URL(args.get(1)).openStream();
@@ -53,6 +53,7 @@ public class EmojiCommand implements Command {
 		} else {
 			reportException(event, "error", "emoji.syntax");
 		}
+		return false;
 	}
 
 	private void createEmoji(List<String> args, MessageReceivedEvent event, byte[] bytes) {

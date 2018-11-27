@@ -6,9 +6,9 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.reflections.Reflections;
-import util.Configuration;
+import config.Config;
 import util.Strings;
-import util.sql.Database;
+import config.Database;
 
 import javax.security.auth.login.LoginException;
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +25,7 @@ public class Main {
 	    JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
         jdaBuilder.setToken(token);
 
-	    Configuration.init();
+	    Config.init();
 	    Database.init();
         Strings.init();
 	    addCommands();

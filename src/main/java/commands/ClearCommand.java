@@ -16,10 +16,10 @@ import static util.Strings.getString;
 public class ClearCommand implements Command {
 
 	@Override
-	public void execute(List<String> args, MessageReceivedEvent e) {
+	public boolean execute(List<String> args, MessageReceivedEvent e) {
 		if (args.size() < 1) {
-			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.RED, getString("error", EN), getString(
-					"clear.missingCount", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
+			JDAUtil.sendEmbedWithLocalisation(Color.RED,"error","clear.missingCount",e.getTextChannel());
+			return false;
 		}
 
 		int numb;
@@ -28,7 +28,7 @@ public class ClearCommand implements Command {
 		} catch (NumberFormatException ex) {
 			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.RED, getString("error", EN), getString(
 					"clear.countOutOfRange", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
-			return;
+			return false;
 		}
 
 		if (numb > 1 && numb <= 100) {
@@ -41,6 +41,7 @@ public class ClearCommand implements Command {
 			e.getTextChannel().sendMessage(JDAUtil.generateEmbed(Color.GREEN, getString("error", EN), getString(
 					"clear.countOutOfRange", EN))).complete().delete().queueAfter(5, TimeUnit.SECONDS);
 		}
+		return false;
 	}
 
 	@Override

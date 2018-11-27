@@ -8,8 +8,9 @@ public interface Command {
 	/**
 	 * @param args The arguments provided when called
 	 * @param event The event of the message
+	 * @return If the help should be printed. False if not.
 	 */
-	void execute(List<String> args, MessageReceivedEvent event);
+	boolean execute(List<String> args, MessageReceivedEvent event);
 
 	/**
 	 * @return The name of the Command as it would be called
