@@ -1,9 +1,7 @@
-package sql;
+package util.sql;
 
-import localisation.Strings;
-import org.slf4j.LoggerFactory;
+import util.Strings;
 
-import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;

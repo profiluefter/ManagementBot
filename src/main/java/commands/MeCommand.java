@@ -1,9 +1,9 @@
 package commands;
 
-import localisation.Strings;
+import util.Strings;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import sql.User;
+import util.sql.User;
 
 import java.awt.*;
 import java.util.List;

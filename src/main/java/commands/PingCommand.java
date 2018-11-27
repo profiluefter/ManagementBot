@@ -1,10 +1,11 @@
 package commands;
 
-import localisation.Strings;
-import static localisation.Strings.Lang.EN;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import util.Strings;
 
 import java.util.List;
+
+import static util.Strings.Lang.EN;
 
 public class PingCommand implements Command {
     @Override

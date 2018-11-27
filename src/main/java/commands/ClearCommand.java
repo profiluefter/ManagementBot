@@ -1,6 +1,6 @@
 package commands;
 
-import localisation.Strings;
+import util.Strings;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -10,8 +10,8 @@ import java.awt.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static localisation.Strings.Lang.EN;
-import static localisation.Strings.getString;
+import static util.Strings.Lang.EN;
+import static util.Strings.getString;
 
 public class ClearCommand implements Command {
 

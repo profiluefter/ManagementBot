@@ -1,15 +1,16 @@
 package commands;
 
 import core.CommandHandler;
-import localisation.Strings;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import static util.JDAUtil.sendMessage;
+import util.Strings;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static util.JDAUtil.sendMessage;
 
 public class HelpCommand implements Command {
 	@Override

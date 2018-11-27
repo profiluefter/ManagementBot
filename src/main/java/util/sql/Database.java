@@ -1,9 +1,8 @@
-package sql;
+package util.sql;
 
-import localisation.Strings;
+import util.Strings;
 import org.slf4j.LoggerFactory;
 
-import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;

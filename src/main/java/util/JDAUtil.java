@@ -1,11 +1,9 @@
 package util;
 
-import localisation.Strings;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.utils.tuple.Pair;
 
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;

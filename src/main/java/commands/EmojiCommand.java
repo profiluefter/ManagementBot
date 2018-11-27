@@ -1,10 +1,9 @@
 package commands;
 
-import localisation.Strings;
-import static localisation.Strings.Lang.EN;
 import net.dv8tion.jda.core.entities.Icon;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import util.Strings;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import static util.JDAUtil.generateEmbed;
 import static util.JDAUtil.sendEmbedWithLocalisation;
+import static util.Strings.Lang.EN;
 
 //TODO: Clean this mess up
 public class EmojiCommand implements Command {
