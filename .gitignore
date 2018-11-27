@@ -1,6 +1,7 @@
 #IntelliJ settings shouldn't be committed
 .idea/
-ManagementBot.iml
 target/
 db.sqlite
 config.properties
+.gradle/
+local.properties
