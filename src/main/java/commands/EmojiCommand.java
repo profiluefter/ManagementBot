@@ -14,9 +14,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static util.JDAUtil.generateEmbed;
 import static util.JDAUtil.sendEmbedWithLocalisation;
 import static util.Strings.Lang.EN;
 
@@ -31,9 +29,9 @@ public class EmojiCommand implements Command {
 
 				createEmoji(args, event, data);
 			} catch (MalformedURLException e) {
-				reportException(event, "emoji.malformedUrlTitle", "emoji.malformedUrlDescription");
+				sendEmbedWithLocalisation(Color.RED, "emoji.malformedUrlTitle", "emoji.malformedUrlDescription", event.getTextChannel());
 			} catch (IOException e) {
-				reportException(event, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription");
+				sendEmbedWithLocalisation(Color.RED, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription", event.getTextChannel());
 			}
 		} else if(event.getMessage().getAttachments().size() == 1 && args.size() == 1) {
 			try {
@@ -45,13 +43,13 @@ public class EmojiCommand implements Command {
 						createEmoji(args, event, bytes);
 					});
 				} else {
-					reportException(event,"emoji.onlyImagesTitle","emoji.onlyImagesDescription");
+					sendEmbedWithLocalisation(Color.RED, "emoji.onlyImagesTitle", "emoji.onlyImagesDescription", event.getTextChannel());
 				}
 			} catch (IOException e) {
-				reportException(event, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription");
+				sendEmbedWithLocalisation(Color.RED, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription", event.getTextChannel());
 			}
 		} else {
-			reportException(event, "error", "emoji.syntax");
+			sendEmbedWithLocalisation(Color.RED, "error", "emoji.syntax", event.getTextChannel());
 		}
 		return false;
 	}
@@ -77,13 +75,6 @@ public class EmojiCommand implements Command {
 		byte[] imageInByte = stream.toByteArray();
 		stream.close();
 		return imageInByte;
-	}
-
-	private void reportException(MessageReceivedEvent event, String s, String s2) {
-		event.getChannel().sendMessage(generateEmbed(Color.RED,
-				Strings.getString(s, Strings.Lang.EN),
-				Strings.getString(s2, Strings.Lang.EN)))
-				.queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
 	}
 
 	@Override

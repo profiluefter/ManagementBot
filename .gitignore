@@ -5,3 +5,4 @@ db.sqlite
 config.properties
 .gradle/
 local.properties
+ManagementBot.iml
