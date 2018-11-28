@@ -1,5 +1,6 @@
 package util;
 
+import config.User;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -17,8 +18,8 @@ public class JDAUtil {
 		return new EmbedBuilder().setColor(color).setTitle(title).setDescription(description).build();
 	}
 
-	public static void sendEmbedWithLocalisation(Color color, String titleKey, String descriptionKey, TextChannel channel) {
-		sendEmbed(color,Strings.getString(titleKey, Strings.Lang.EN),Strings.getString(descriptionKey, Strings.Lang.EN),channel);
+	public static void sendEmbedWithLocalisation(Color color, String titleKey, String descriptionKey, TextChannel channel, User user) {
+		sendEmbed(color,Strings.getString(titleKey, user),Strings.getString(descriptionKey, user),channel);
 	}
 
 	public static void sendEmbed(Color color, String title, String description, TextChannel channel) {

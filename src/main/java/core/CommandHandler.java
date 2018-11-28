@@ -2,9 +2,13 @@ package core;
 
 import commands.Command;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import util.Configuration;
+import config.Config;
+import util.JDAUtil;
+import util.Strings;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CommandHandler {
@@ -13,7 +17,7 @@ public class CommandHandler {
 	public static void handle(MessageReceivedEvent event) {
 		String rawMessage = event.getMessage().getContentRaw();
 		List<String> split = Arrays.asList(rawMessage.split(" "));
-		String invoke = split.get(0).replaceFirst(Configuration.get("prefix"),"");
+		String invoke = split.get(0).replaceFirst(Config.get("prefix"),"");
 
 		List<String> args;
 		if(split.size() > 1)
@@ -23,7 +27,10 @@ public class CommandHandler {
 
 		Command command = commands.getOrDefault(invoke,commands.get("help"));
 		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
-		command.execute(args,event);
+		boolean printHelp = command.execute(args,event);
+		if (printHelp) {
+			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event.getAuthor().getIdLong()),command.getHelp(event),event.getTextChannel());
+		}
 	}
 
 	static void registerCommand(Command command) {

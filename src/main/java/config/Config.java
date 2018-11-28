@@ -1,4 +1,4 @@
-package util;
+package config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,14 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Configuration {
+public class Config {
 	private static Properties properties;
 	private static File configFile = new File("config.properties");
 
 	public static void init() {
 		Properties defaultConfig = new Properties();
 		try {
-			defaultConfig.load(Configuration.class.getResourceAsStream("/default-config.properties"));
+			defaultConfig.load(Config.class.getResourceAsStream("/default-config.properties"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

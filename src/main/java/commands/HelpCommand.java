@@ -14,18 +14,19 @@ import static util.JDAUtil.sendMessage;
 
 public class HelpCommand implements Command {
 	@Override
-	public void execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		List<MessageEmbed.Field> fields = new ArrayList<>();
 		for(Command command : CommandHandler.getCommands().values()) {
 			fields.add(new MessageEmbed.Field(command.getName(),
-					command.getHelp() == null ?
-							Strings.getString("help.notAvailable", Strings.Lang.EN) :
-							command.getHelp(), false));
+					command.getHelp(event) == null ?
+							Strings.getString("help.notAvailable", event.getAuthor().getIdLong()) :
+							command.getHelp(event), false));
 		}
 		EmbedBuilder embedBuilder =
-				new EmbedBuilder().setTitle(Strings.getString("help.title", Strings.Lang.EN)).setColor(Color.BLUE);
+				new EmbedBuilder().setTitle(Strings.getString("help.title", event.getAuthor().getIdLong())).setColor(Color.BLUE);
 		fields.forEach(embedBuilder::addField);
 		sendMessage(embedBuilder.build(), event.getTextChannel());
+		return false;
 	}
 
 	@Override
@@ -34,7 +35,7 @@ public class HelpCommand implements Command {
 	}
 
 	@Override
-	public String getHelp() {
-		return Strings.getString("help.help", Strings.Lang.EN);
+	public String getHelp(MessageReceivedEvent event) {
+		return Strings.getString("help.help", event.getAuthor().getIdLong());
 	}
 }

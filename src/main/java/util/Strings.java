@@ -1,6 +1,10 @@
 package util;
 
+import config.User;
+
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class Strings {
@@ -12,8 +16,8 @@ public class Strings {
 	 */
 	public static void init() {
 		try {
-			enLocale.load(Strings.class.getResourceAsStream("/strings_en.properties"));
-			deLocale.load(Strings.class.getResourceAsStream("/strings_de.properties"));
+			enLocale.load(new InputStreamReader(Strings.class.getResourceAsStream("/strings_en.properties"), Charset.forName("UTF-8")));
+			deLocale.load(new InputStreamReader(Strings.class.getResourceAsStream("/strings_de.properties"), Charset.forName("UTF-8")));
 		}catch(IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -24,8 +28,17 @@ public class Strings {
 	 * @param language The language of the desired String
 	 * @return The requested String
 	 */
+	@Deprecated
 	public static String getString(String key, Lang language) {
 		return (language == Lang.EN ? enLocale : deLocale).getProperty(key);
+	}
+
+	public static String getString(String key, User user) {
+		return getString(key, user.getLanguage());
+	}
+
+	public static String getString(String key, long userId) {
+		return getString(key, User.loadUser(userId));
 	}
 
 	public static String parseLang(Lang lang) {

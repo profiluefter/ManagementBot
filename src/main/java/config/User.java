@@ -1,4 +1,4 @@
-package util.sql;
+package config;
 
 import util.Strings;
 
@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-//TODO: Documentation
 public class User {
 	private static HashMap<Long,User> loadedUsers = new HashMap<>();
 
@@ -18,11 +17,11 @@ public class User {
 		this.language = language;
 	}
 
-	@Override
-	public String toString() {
-		return "ID=" + discordid + " Lang="+language;
-	}
-
+	/**
+	 * Loads userdata or returns the cached version of it.
+	 * @param discordid The discord-id of the requested user.
+	 * @return The requested user.
+	 */
 	public static User loadUser(long discordid) {
 		if(loadedUsers.containsKey(discordid)) {
 			return loadedUsers.get(discordid);
@@ -38,14 +37,25 @@ public class User {
 		}
 	}
 
+	/**
+	 * @return The discord-id of the user.
+	 */
 	public long getDiscordid() {
 		return discordid;
 	}
 
+	/**
+	 * @return The language preferred by the user. Can be converted from/to String with util.Strings.parseLang()
+	 */
 	public Strings.Lang getLanguage() {
 		return language;
 	}
 
+	/**
+	 * Sets the language of the user and saves it in the database
+	 * @param language The preferred language
+	 * @return The object this method was called on. Usefull for chaining
+	 */
 	public User setLanguage(Strings.Lang language) {
 		this.language = language;
 		Database.saveUser(this);
