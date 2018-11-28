@@ -19,6 +19,7 @@ public interface Command {
 
 	/**
 	 * @return A short description of the command and its usage
+	 * @param event The event that was fired when receiving the message
 	 */
-	String getHelp();
+	String getHelp(MessageReceivedEvent event);
 }

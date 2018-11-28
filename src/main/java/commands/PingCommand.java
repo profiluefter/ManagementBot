@@ -1,16 +1,15 @@
 package commands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import util.JDAUtil;
 import util.Strings;
 
 import java.util.List;
 
-import static util.Strings.Lang.EN;
-
 public class PingCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		event.getTextChannel().sendMessage(Strings.getString("ping.msg", Strings.Lang.EN).replaceAll("\\[VALUE]",Long.toString(event.getJDA().getPing()))).queue();
+		JDAUtil.sendMessage(Strings.getString("ping.msg", event.getAuthor().getIdLong()).replaceAll("\\[VALUE]", Long.toString(event.getJDA().getPing())),event.getTextChannel());
 		return false;
 	}
 
@@ -19,7 +18,7 @@ public class PingCommand implements Command {
 		return "ping";
 	}
 
-	public String getHelp() {
-		return Strings.getString("ping.help",EN);
+	public String getHelp(MessageReceivedEvent event) {
+		return Strings.getString("ping.help",event.getAuthor().getIdLong());
 	}
 }

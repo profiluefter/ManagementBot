@@ -1,5 +1,6 @@
 package commands;
 
+import config.User;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -9,14 +10,13 @@ import java.awt.*;
 import java.util.List;
 
 import static util.JDAUtil.sendEmbedWithLocalisation;
-import static util.Strings.Lang.EN;
 
 public class ClearCommand implements Command {
 
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent e) {
 		if (args.size() < 1) {
-			sendEmbedWithLocalisation(Color.RED,"error","clear.missingCount",e.getTextChannel());
+			sendEmbedWithLocalisation(Color.RED,"error","clear.missingCount",e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
 		}
 
@@ -24,7 +24,7 @@ public class ClearCommand implements Command {
 		try {
 			numb = Integer.parseInt(args.get(0));
 		} catch (NumberFormatException ex) {
-			sendEmbedWithLocalisation(Color.RED,"error","clear.countOutOfRange", e.getTextChannel());
+			sendEmbedWithLocalisation(Color.RED,"error","clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
 		}
 
@@ -32,9 +32,9 @@ public class ClearCommand implements Command {
 			List<Message> mgs = new MessageHistory(e.getTextChannel()).retrievePast(numb).complete();
 			e.getTextChannel().deleteMessages(mgs).queue();
 
-			sendEmbedWithLocalisation(Color.GREEN,"success","clear.success",e.getTextChannel());
+			sendEmbedWithLocalisation(Color.GREEN,"success","clear.success",e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 		} else {
-			sendEmbedWithLocalisation(Color.RED,"error","clear.countOutOfRange", e.getTextChannel());
+			sendEmbedWithLocalisation(Color.RED,"error","clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 		}
 		return false;
 	}
@@ -44,7 +44,7 @@ public class ClearCommand implements Command {
 		return "clear";
 	}
 
-	public String getHelp() {
-		return Strings.getString("clear.help",EN);
+	public String getHelp(MessageReceivedEvent event) {
+		return Strings.getString("clear.help",event.getAuthor().getIdLong());
 	}
 }
