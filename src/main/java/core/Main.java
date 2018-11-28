@@ -17,10 +17,9 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
-        String token = System.getenv("discord.token");
-        if(token == null) {
-            throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token!");
-        }
+        String token;
+        if((token = System.getenv("discord.token")) == null && (token = System.getenv("DISCORD_TOKEN")) == null)
+	        throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token or DISCORD_TOKEN!");
 
 	    JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
         jdaBuilder.setToken(token);
