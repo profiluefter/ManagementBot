@@ -1,5 +1,6 @@
 package commands;
 
+import config.User;
 import net.dv8tion.jda.core.entities.Icon;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -14,11 +15,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static util.JDAUtil.generateEmbed;
 import static util.JDAUtil.sendEmbedWithLocalisation;
-import static util.Strings.Lang.EN;
 
 //TODO: Clean this mess up
 public class EmojiCommand implements Command {
@@ -31,9 +29,9 @@ public class EmojiCommand implements Command {
 
 				createEmoji(args, event, data);
 			} catch (MalformedURLException e) {
-				reportException(event, "emoji.malformedUrlTitle", "emoji.malformedUrlDescription");
+				sendEmbedWithLocalisation(Color.RED, "emoji.malformedUrlTitle", "emoji.malformedUrlDescription", event.getTextChannel(), User.loadUser(event.getAuthor().getIdLong()));
 			} catch (IOException e) {
-				reportException(event, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription");
+				sendEmbedWithLocalisation(Color.RED, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription", event.getTextChannel(), User.loadUser(event.getAuthor().getIdLong()));
 			}
 		} else if(event.getMessage().getAttachments().size() == 1 && args.size() == 1) {
 			try {
@@ -45,20 +43,20 @@ public class EmojiCommand implements Command {
 						createEmoji(args, event, bytes);
 					});
 				} else {
-					reportException(event,"emoji.onlyImagesTitle","emoji.onlyImagesDescription");
+					sendEmbedWithLocalisation(Color.RED, "emoji.onlyImagesTitle", "emoji.onlyImagesDescription", event.getTextChannel(), User.loadUser(event.getAuthor().getIdLong()));
 				}
 			} catch (IOException e) {
-				reportException(event, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription");
+				sendEmbedWithLocalisation(Color.RED, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription", event.getTextChannel(), User.loadUser(event.getAuthor().getIdLong()));
 			}
 		} else {
-			reportException(event, "error", "emoji.syntax");
+			sendEmbedWithLocalisation(Color.RED, "error", "emoji.syntax", event.getTextChannel(), User.loadUser(event.getAuthor().getIdLong()));
 		}
 		return false;
 	}
 
 	private void createEmoji(List<String> args, MessageReceivedEvent event, byte[] bytes) {
 		event.getGuild().getController().createEmote(args.get(0), Icon.from(bytes)).queue(emote ->
-				sendEmbedWithLocalisation(Color.GREEN, "success", "emoji.success", event.getTextChannel()));
+				sendEmbedWithLocalisation(Color.GREEN, "success", "emoji.success", event.getTextChannel(), User.loadUser(event.getAuthor().getIdLong())));
 	}
 
 	private BufferedImage scaleImage(BufferedImage src) {
@@ -79,20 +77,13 @@ public class EmojiCommand implements Command {
 		return imageInByte;
 	}
 
-	private void reportException(MessageReceivedEvent event, String s, String s2) {
-		event.getChannel().sendMessage(generateEmbed(Color.RED,
-				Strings.getString(s, Strings.Lang.EN),
-				Strings.getString(s2, Strings.Lang.EN)))
-				.queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
-	}
-
 	@Override
 	public String getName() {
 		return "emoji";
 	}
 
 	@Override
-	public String getHelp() {
-		return Strings.getString("emoji.help",EN);
+	public String getHelp(MessageReceivedEvent event) {
+		return Strings.getString("emoji.help",event.getAuthor().getIdLong());
 	}
 }

@@ -38,14 +38,14 @@ public class MeCommand implements Command {
 				Strings.Lang lang = Strings.parseLang(args.get(2));
 				if (lang == null) {
 					sendEmbed(Color.RED,
-							Strings.getString("me.invalidArgument", Strings.Lang.EN),
-							Strings.getString("me.invalidArgumentDescription", Strings.Lang.EN).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", Strings.Lang.EN)),
+							Strings.getString("me.invalidArgument", event.getAuthor().getIdLong()),
+							Strings.getString("me.invalidArgumentDescription", event.getAuthor().getIdLong()).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event.getAuthor().getIdLong())),
 							event.getTextChannel());
 				} else {
 					User.loadUser(event.getAuthor().getIdLong()).setLanguage(lang);
 					sendEmbed(Color.GREEN,
-							Strings.getString("success", Strings.Lang.EN),
-							Strings.getString("me.changed", Strings.Lang.EN).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", Strings.Lang.EN)).replaceAll("\\[VALUE]", Strings.parseLang(lang)),
+							Strings.getString("success", event.getAuthor().getIdLong()),
+							Strings.getString("me.changed", event.getAuthor().getIdLong()).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event.getAuthor().getIdLong())).replaceAll("\\[VALUE]", Strings.parseLang(lang)),
 							event.getTextChannel());
 				}
 				return false;
@@ -59,8 +59,8 @@ public class MeCommand implements Command {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.GREEN)
 				.setTitle(event.getAuthor().getName())
-				.addField(Strings.getString("me.discordid", Strings.Lang.EN), String.valueOf(user.getDiscordid()), false)
-				.addField(Strings.getString("me.language", Strings.Lang.EN), Strings.parseLang(user.getLanguage()), false);
+				.addField(Strings.getString("me.discordid", event.getAuthor().getIdLong()), String.valueOf(user.getDiscordid()), false)
+				.addField(Strings.getString("me.language", event.getAuthor().getIdLong()), Strings.parseLang(user.getLanguage()), false);
 		sendMessage(builder.build(), event.getTextChannel());
 	}
 
@@ -70,7 +70,7 @@ public class MeCommand implements Command {
 	}
 
 	@Override
-	public String getHelp() {
-		return Strings.getString("me.help", Strings.Lang.EN);
+	public String getHelp(MessageReceivedEvent event) {
+		return Strings.getString("me.help", event.getAuthor().getIdLong());
 	}
 }
