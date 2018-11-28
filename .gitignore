@@ -6,3 +6,4 @@ config.properties
 .gradle/
 local.properties
 build/
+ManagementBot.iml
