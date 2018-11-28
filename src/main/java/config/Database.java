@@ -8,6 +8,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.stream.Collectors;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Database {
 	private static Connection sql;
@@ -65,9 +68,7 @@ public class Database {
 		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		String sqliteCommand = String.join("\n",
-				Files.readAllLines(Paths.get(Database.class.getResource("/sqlite-schema.sql").toURI()))
-		);
+		String sqliteCommand = new BufferedReader(new InputStreamReader(Database.class.getResourceAsStream("/sqlite-schema.sql"))).lines().collect(Collectors.joining("\n"));
 
 		LoggerFactory.getLogger(Database.class).info("Running default SQL...");
 		Statement statement = sql.createStatement();
