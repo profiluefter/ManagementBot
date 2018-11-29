@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.stream.Collectors;
 import java.io.BufferedReader;
@@ -17,21 +15,32 @@ public class Database {
 
 	/**
 	 * Loads userdata from the database
-	 * @param discordId The discord-id of the requested user
+	 * @param discordID The discord-id of the requested user
 	 * @return The userdata as a result set
 	 */
-	static ResultSet loadUser(long discordId) {
+	static ResultSet loadUser(long discordID) {
 		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
 			PreparedStatement statement = sql.prepareStatement("SELECT * FROM users where 'discord-id'=?");
-			statement.setLong(1, discordId);
+			statement.setLong(1, discordID);
 			return statement.executeQuery();
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
+
+	/*static ResultSet loadPermissions(long discordID) {
+		if(sql == null) {
+			throw new RuntimeException("SQL not connected");
+		}
+		try {
+			PreparedStatement statement = sql.prepareStatement("SELECT permis");
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}*/
 
 	/**
 	 * Saves userdata to the database
@@ -43,10 +52,10 @@ public class Database {
 		}
 		try {
 			PreparedStatement statement = sql.prepareStatement("INSERT OR REPLACE INTO users ('discord-id', language) VALUES (?,?)");
-			statement.setLong(1,user.getDiscordid());
+			statement.setLong(1,user.getDiscordId());
 			statement.setString(2, Strings.parseLang(user.getLanguage()));
 			int affectedRows = statement.executeUpdate();
-			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordid() + "! Affected " + affectedRows + " rows!");
+			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordId() + "! Affected " + affectedRows + " rows!");
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -71,8 +80,7 @@ public class Database {
 		String sqliteCommand = new BufferedReader(new InputStreamReader(Database.class.getResourceAsStream("/sqlite-schema.sql"))).lines().collect(Collectors.joining("\n"));
 
 		LoggerFactory.getLogger(Database.class).info("Running default SQL...");
-		Statement statement = sql.createStatement();
-		statement.execute(sqliteCommand);
+
 		LoggerFactory.getLogger(Database.class).info("Successfully ran default SQL!");
 	}
 }

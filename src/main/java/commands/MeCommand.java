@@ -59,7 +59,7 @@ public class MeCommand implements Command {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.GREEN)
 				.setTitle(event.getAuthor().getName())
-				.addField(Strings.getString("me.discordid", event.getAuthor().getIdLong()), String.valueOf(user.getDiscordid()), false)
+				.addField(Strings.getString("me.discordid", event.getAuthor().getIdLong()), String.valueOf(user.getDiscordId()), false)
 				.addField(Strings.getString("me.language", event.getAuthor().getIdLong()), Strings.parseLang(user.getLanguage()), false);
 		sendMessage(builder.build(), event.getTextChannel());
 	}
