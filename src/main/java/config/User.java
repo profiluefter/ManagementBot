@@ -33,11 +33,20 @@ public class User {
 			return loadedUsers.get(discordID);
 		} else {
 			try {
-				ResultSet set = Database.loadUser(discordID);
+				ResultSet userSet = Database.loadUser(discordID);
+				ResultSet permissionSet = Database.loadPermissions(discordID);
+
 				List<String> permissions = new ArrayList<>();
+				if (permissionSet.getFetchSize() != 0) {
+					permissions.add(permissionSet.getString(2));
+					while (permissionSet.next()) {
+						permissions.add(permissionSet.getString(2));
+					}
+				}
+
 				User user = new User(
 						discordID,
-						Strings.parseLang(set.getFetchSize() == 1 ? set.getString("language") : "EN"),
+						Strings.parseLang(userSet.getFetchSize() == 1 ? userSet.getString("language") : "EN"),
 						permissions
 				);
 				loadedUsers.put(discordID, user);
@@ -53,6 +62,10 @@ public class User {
 	 */
 	public long getDiscordId() {
 		return discordID;
+	}
+
+	public List<String> getPermissions() {
+		return permissions;
 	}
 
 	/**
