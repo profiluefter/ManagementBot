@@ -55,9 +55,9 @@ public class Database {
 			userStatement.setString(2, Strings.parseLang(user.getLanguage()));
 			int affectedRows = userStatement.executeUpdate();
 
-			PreparedStatement permissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions ('discord-id', permission) VALUES (?,?)");
-			permissionStatement.setLong(1,user.getDiscordId());
+			PreparedStatement permissionStatement = sql.prepareStatement("INSERT INTO permissions ('discord-id', permission) VALUES (?,?)");
 			for (String permission : user.getPermissions()) {
+				permissionStatement.setLong(1,user.getDiscordId());
 				permissionStatement.setString(2,permission);
 				affectedRows += permissionStatement.executeUpdate();
 			}

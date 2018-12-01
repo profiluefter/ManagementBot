@@ -68,6 +68,11 @@ public class User {
 		return permissions;
 	}
 
+	public void addPermission(String permission) {
+		permissions.add(permission);
+		Database.saveUser(this);
+	}
+
 	/**
 	 * @return The language preferred by the user. Can be converted from/to String with util.Strings.parseLang()
 	 */
