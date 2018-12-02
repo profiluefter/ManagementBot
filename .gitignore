@@ -5,3 +5,4 @@ target/
 db.sqlite
 config.properties
 ManagementBot.iml
+/db.sqlite-journal

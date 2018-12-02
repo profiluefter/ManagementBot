@@ -8,7 +8,7 @@ import java.util.List;
 public class PermissionCommand implements Command{
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		User user = User.loadUser(event.getAuthor().getIdLong());
+		User user = User.loadUser(event);
 		user.addPermission("HEINRICH LOHL");
 		user.getPermissions().forEach(System.out::println);
 		return false;

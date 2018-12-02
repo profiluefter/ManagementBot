@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 //TODO: documentation

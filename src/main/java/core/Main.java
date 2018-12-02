@@ -30,8 +30,9 @@ public class Main {
 	    addCommands();
 	    addListeners(jdaBuilder);
 
+	    JDA jda;
         try {
-            JDA jda = jdaBuilder.build().awaitReady();
+            jda = jdaBuilder.build().awaitReady();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }

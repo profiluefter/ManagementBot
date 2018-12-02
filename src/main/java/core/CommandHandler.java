@@ -29,7 +29,7 @@ public class CommandHandler {
 		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
 		boolean printHelp = command.execute(args,event);
 		if (printHelp) {
-			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event.getAuthor().getIdLong()),command.getHelp(event),event.getTextChannel());
+			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event),command.getHelp(event),event.getTextChannel());
 		}
 	}
 

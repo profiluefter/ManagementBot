@@ -20,7 +20,7 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("SELECT * FROM users where 'discord-id'=?");
+			PreparedStatement statement = sql.prepareStatement("SELECT * FROM users where 'discord-id'=?;");
 			statement.setLong(1, discordID);
 			return statement.executeQuery();
 		}catch(SQLException e) {
@@ -33,8 +33,8 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("SELECT permission FROM permissions WHERE 'discord-id'=?");
-			statement.setLong(1,discordID);
+			PreparedStatement statement = sql.prepareStatement("SELECT * FROM permissions;");
+//			statement.setLong(1,discordID);
 			return statement.executeQuery();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

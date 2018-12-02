@@ -45,6 +45,6 @@ public class ClearCommand implements Command {
 	}
 
 	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("clear.help",event.getAuthor().getIdLong());
+		return Strings.getString("clear.help",event);
 	}
 }

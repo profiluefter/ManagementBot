@@ -1,5 +1,6 @@
 package config;
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.Strings;
 
 import java.sql.ResultSet;
@@ -55,6 +56,10 @@ public class User {
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	public static User loadUser(MessageReceivedEvent event) {
+		return loadUser(event.getAuthor().getIdLong());
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package util;
 
 import config.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,6 +40,10 @@ public class Strings {
 
 	public static String getString(String key, long userId) {
 		return getString(key, User.loadUser(userId));
+	}
+
+	public static String getString(String key, MessageReceivedEvent event) {
+		return getString(key,event.getAuthor().getIdLong());
 	}
 
 	public static String parseLang(Lang lang) {

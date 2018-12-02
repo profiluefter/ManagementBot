@@ -9,7 +9,7 @@ import java.util.List;
 public class PingCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		JDAUtil.sendMessage(Strings.getString("ping.msg", event.getAuthor().getIdLong()).replaceAll("\\[VALUE]", Long.toString(event.getJDA().getPing())),event.getTextChannel());
+		JDAUtil.sendMessage(Strings.getString("ping.msg", event).replaceAll("\\[VALUE]", Long.toString(event.getJDA().getPing())),event.getTextChannel());
 		return false;
 	}
 
@@ -19,6 +19,6 @@ public class PingCommand implements Command {
 	}
 
 	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("ping.help",event.getAuthor().getIdLong());
+		return Strings.getString("ping.help",event);
 	}
 }

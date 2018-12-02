@@ -2,11 +2,13 @@ package commands;
 
 import config.User;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.Strings;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static util.JDAUtil.sendEmbed;
 import static util.JDAUtil.sendMessage;
@@ -38,14 +40,14 @@ public class MeCommand implements Command {
 				Strings.Lang lang = Strings.parseLang(args.get(2));
 				if (lang == null) {
 					sendEmbed(Color.RED,
-							Strings.getString("me.invalidArgument", event.getAuthor().getIdLong()),
-							Strings.getString("me.invalidArgumentDescription", event.getAuthor().getIdLong()).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event.getAuthor().getIdLong())),
+							Strings.getString("me.invalidArgument", event),
+							Strings.getString("me.invalidArgumentDescription", event).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event)),
 							event.getTextChannel());
 				} else {
-					User.loadUser(event.getAuthor().getIdLong()).setLanguage(lang);
+					User.loadUser(event).setLanguage(lang);
 					sendEmbed(Color.GREEN,
-							Strings.getString("success", event.getAuthor().getIdLong()),
-							Strings.getString("me.changed", event.getAuthor().getIdLong()).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event.getAuthor().getIdLong())).replaceAll("\\[VALUE]", Strings.parseLang(lang)),
+							Strings.getString("success", event),
+							Strings.getString("me.changed", event).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event)).replaceAll("\\[VALUE]", Strings.parseLang(lang)),
 							event.getTextChannel());
 				}
 				return false;
@@ -55,12 +57,13 @@ public class MeCommand implements Command {
 	}
 
 	private void printUserInfo(MessageReceivedEvent event) {
-		User user = User.loadUser(event.getAuthor().getIdLong());
+		User user = User.loadUser(event);
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.GREEN)
 				.setTitle(event.getAuthor().getName())
-				.addField(Strings.getString("me.discordid", event.getAuthor().getIdLong()), String.valueOf(user.getDiscordId()), false)
-				.addField(Strings.getString("me.language", event.getAuthor().getIdLong()), Strings.parseLang(user.getLanguage()), false);
+				.addField(Strings.getString("me.discordid", event), String.valueOf(user.getDiscordId()), false)
+				.addField(Strings.getString("me.language", event), Strings.parseLang(user.getLanguage()), false)
+				.addField(Strings.getString("me.roles", event),event.getMember().getRoles().stream().map(Role::getName).collect(Collectors.joining(", ")),false);
 		sendMessage(builder.build(), event.getTextChannel());
 	}
 
@@ -71,6 +74,6 @@ public class MeCommand implements Command {
 
 	@Override
 	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("me.help", event.getAuthor().getIdLong());
+		return Strings.getString("me.help", event);
 	}
 }
