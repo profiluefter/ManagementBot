@@ -1,6 +1,7 @@
 package config;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.slf4j.LoggerFactory;
 import util.Strings;
 
 import java.sql.ResultSet;
@@ -34,6 +35,8 @@ public class User {
 			return loadedUsers.get(discordID);
 		} else {
 			try {
+				LoggerFactory.getLogger(User.class).info("Loading user " + discordID + "...");
+
 				ResultSet userSet = Database.loadUser(discordID);
 				ResultSet permissionSet = Database.loadPermissions(discordID);
 
@@ -47,10 +50,11 @@ public class User {
 
 				User user = new User(
 						discordID,
-						Strings.parseLang(userSet.getFetchSize() == 1 ? userSet.getString("language") : "EN"),
+						userSet.isClosed() ? Strings.Lang.EN : Strings.parseLang(userSet.getString("language")),
 						permissions
 				);
 				loadedUsers.put(discordID, user);
+				LoggerFactory.getLogger(User.class).info("Loaded user " + discordID + "!");
 				return user;
 			} catch (SQLException e) {
 				throw new RuntimeException(e);

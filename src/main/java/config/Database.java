@@ -20,9 +20,7 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("SELECT * FROM users where 'discord-id'=?;");
-			statement.setLong(1, discordID);
-			return statement.executeQuery();
+			return sql.createStatement().executeQuery("SELECT * FROM users WHERE discordID=" + discordID);
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -33,9 +31,7 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("SELECT * FROM permissions;");
-//			statement.setLong(1,discordID);
-			return statement.executeQuery();
+			return sql.createStatement().executeQuery("SELECT * FROM permissions WHERE discordID=" + discordID);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -50,16 +46,12 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement userStatement = sql.prepareStatement("INSERT OR REPLACE INTO users ('discord-id', language) VALUES (?,?)");
-			userStatement.setLong(1,user.getDiscordId());
-			userStatement.setString(2, Strings.parseLang(user.getLanguage()));
-			int affectedRows = userStatement.executeUpdate();
+			Statement userStatement = sql.createStatement();
+			int affectedRows = userStatement.executeUpdate("INSERT OR REPLACE INTO users (discordID, language) VALUES (" + user.getDiscordId() + ",'" + Strings.parseLang(user.getLanguage()) + "')");
 
-			PreparedStatement permissionStatement = sql.prepareStatement("INSERT INTO permissions ('discord-id', permission) VALUES (?,?)");
+			Statement permissionStatement = sql.createStatement();
 			for (String permission : user.getPermissions()) {
-				permissionStatement.setLong(1,user.getDiscordId());
-				permissionStatement.setString(2,permission);
-				affectedRows += permissionStatement.executeUpdate();
+				affectedRows += permissionStatement.executeUpdate("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (" + user.getDiscordId() + ",'" + permission + "')");
 			}
 			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordId() + "! Affected " + affectedRows + " rows!");
 		}catch(SQLException e) {
