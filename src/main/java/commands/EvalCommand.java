@@ -1,6 +1,7 @@
 package commands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import config.Config;
 
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
@@ -12,13 +13,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
+import java.lang.reflect.Method;
 
 public class EvalCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		try {
-			String source = "package eval; class Test { public static void main(String[] args) {System.out.println(\"LOHL\");} }";
-
+			String source = event.getMessage().getContentStripped().replaceFirst(Config.get("prefix") + getName(),"");
+			
 			File root = Files.createTempDirectory("managementBot").toFile();
 			File sourceFile = new File(root, "eval/Test.java");
 			sourceFile.getParentFile().mkdirs();
@@ -30,7 +32,9 @@ public class EvalCommand implements Command {
 
 			URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{root.toURI().toURL()});
 			Class<?> cls = Class.forName("eval.Test", true, classLoader);
-			cls.getMethod("main",String[].class).invoke(null,new Object[] {new String[]{}});
+			Method method = cls.getMethod("main",String[].class);
+			method.setAccessible(true);
+			method.invoke(null,new Object[] {new String[]{}});
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
