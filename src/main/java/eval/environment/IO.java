@@ -1,10 +1,9 @@
-package eval;
-
-import java.io.PrintWriter;
+package eval.environment;
 
 import net.dv8tion.jda.core.entities.TextChannel;
-
 import util.DiscordChannelWriter;
+
+import java.io.PrintWriter;
 
 public class IO {
     private static TextChannel textChannel;

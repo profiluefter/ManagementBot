@@ -1,6 +1,7 @@
 package core;
 
 import commands.Command;
+import eval.EvalCommand;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -44,6 +45,8 @@ public class Main {
 	 * and adds them to the CommandHandler
 	 */
     private static void addCommands() {
+    	CommandHandler.registerCommand(new EvalCommand());
+
         Reflections reflections = new Reflections("commands");
         Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
         for (Class<? extends Command> command : commands) {
