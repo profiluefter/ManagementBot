@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 
 import util.DiscordChannelWriter;
 
-class IO {
+public class IO {
     private static TextChannel textChannel;
     private PrintWriter writer;
     
