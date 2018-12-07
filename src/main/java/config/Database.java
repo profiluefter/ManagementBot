@@ -6,6 +6,8 @@ import util.Strings;
 
 import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 	private static Connection sql;
@@ -27,12 +29,19 @@ public class Database {
 		}
 	}
 
-	static ResultSet loadPermissions(long discordID) {
+	static List<String> loadPermissions(long discordID) {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
+		ResultSet resultSet;
 		try {
-			return sql.createStatement().executeQuery("SELECT * FROM permissions WHERE discordID=" + discordID);
+			resultSet = sql.createStatement().executeQuery("SELECT * FROM permissions WHERE discordID=" + discordID);
+			List<String> permissions = new ArrayList<>();
+
+			while (resultSet.next())
+				permissions.add(resultSet.getString(2));
+
+			return permissions;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
