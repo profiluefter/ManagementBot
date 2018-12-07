@@ -55,6 +55,8 @@ public class Database {
 			for (String permission : user.getPermissions()) {
 				affectedRows += permissionStatement.executeUpdate("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (" + user.getDiscordId() + ",'" + permission + "')");
 			}
+
+			sql.commit();
 			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordId() + "! Affected " + affectedRows + " rows!");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
