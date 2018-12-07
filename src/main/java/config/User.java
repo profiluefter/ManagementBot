@@ -6,7 +6,6 @@ import util.Strings;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,15 +37,7 @@ public class User {
 				LoggerFactory.getLogger(User.class).info("Loading user " + discordID + "...");
 
 				ResultSet userSet = Database.loadUser(discordID);
-				ResultSet permissionSet = Database.loadPermissions(discordID);
-
-				List<String> permissions = new ArrayList<>();
-				if (permissionSet.getFetchSize() != 0) {
-					permissions.add(permissionSet.getString(2));
-					while (permissionSet.next()) {
-						permissions.add(permissionSet.getString(2));
-					}
-				}
+				List<String> permissions = Database.loadPermissions(discordID);
 
 				User user = new User(
 						discordID,
@@ -78,8 +69,10 @@ public class User {
 	}
 
 	public void addPermission(String permission) {
-		permissions.add(permission);
-		Database.saveUser(this);
+		if(!permissions.contains(permission)) {
+			permissions.add(permission);
+			Database.saveUser(this);
+		}
 	}
 
 	/**
