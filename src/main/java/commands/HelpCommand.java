@@ -16,7 +16,7 @@ public class HelpCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		List<MessageEmbed.Field> fields = new ArrayList<>();
-		for(Command command : CommandHandler.getCommands().values()) {
+		for (Command command : CommandHandler.getCommands().values()) {
 			fields.add(new MessageEmbed.Field(command.getName(),
 					command.getHelp(event) == null ?
 							Strings.getString("help.notAvailable", event) :

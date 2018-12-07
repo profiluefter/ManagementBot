@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Command {
 	/**
-	 * @param args The arguments provided when called
+	 * @param args  The arguments provided when called
 	 * @param event The event of the message
 	 * @return If the help should be printed. False if not.
 	 */
@@ -18,8 +18,8 @@ public interface Command {
 	String getName();
 
 	/**
-	 * @return A short description of the command and its usage
 	 * @param event The event that was fired when receiving the message
+	 * @return A short description of the command and its usage
 	 */
 	String getHelp(MessageReceivedEvent event);
 }

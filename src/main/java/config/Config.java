@@ -34,7 +34,7 @@ public class Config {
 
 	private static void save() {
 		try {
-			properties.store(new FileOutputStream(configFile),"Config file for the ManagementBot");
+			properties.store(new FileOutputStream(configFile), "Config file for the ManagementBot");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

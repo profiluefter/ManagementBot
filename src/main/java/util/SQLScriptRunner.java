@@ -18,12 +18,7 @@ package util;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +40,6 @@ public class SQLScriptRunner {
 	private boolean autoCommit;
 	private boolean sendFullScript;
 	private boolean removeCRs;
-	private boolean escapeProcessing = true;
 
 	private PrintWriter logWriter = new PrintWriter(System.out);
 	private PrintWriter errorLogWriter = new PrintWriter(System.err);
@@ -81,7 +75,7 @@ public class SQLScriptRunner {
 	 * @since 3.1.1
 	 */
 	public void setEscapeProcessing(boolean escapeProcessing) {
-		this.escapeProcessing = escapeProcessing;
+		boolean escapeProcessing1 = escapeProcessing;
 	}
 
 	public void setLogWriter(PrintWriter logWriter) {

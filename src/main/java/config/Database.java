@@ -12,22 +12,23 @@ public class Database {
 
 	/**
 	 * Loads userdata from the database
+	 *
 	 * @param discordID The discord-id of the requested user
 	 * @return The userdata as a result set
 	 */
 	static ResultSet loadUser(long discordID) {
-		if(sql == null) {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
 			return sql.createStatement().executeQuery("SELECT * FROM users WHERE discordID=" + discordID);
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	static ResultSet loadPermissions(long discordID) {
-		if(sql == null) {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
@@ -39,10 +40,11 @@ public class Database {
 
 	/**
 	 * Saves userdata to the database
+	 *
 	 * @param user The User object to save
 	 */
 	static void saveUser(User user) {
-		if(sql == null) {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
@@ -54,7 +56,7 @@ public class Database {
 				affectedRows += permissionStatement.executeUpdate("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (" + user.getDiscordId() + ",'" + permission + "')");
 			}
 			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordId() + "! Affected " + affectedRows + " rows!");
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -66,13 +68,13 @@ public class Database {
 		try {
 			sql = DriverManager.getConnection("jdbc:sqlite:db.sqlite");
 			runDefaultSQL();
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	private static void runDefaultSQL() {
-		if(sql == null) {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		LoggerFactory.getLogger(Database.class).info("Running default SQL...");

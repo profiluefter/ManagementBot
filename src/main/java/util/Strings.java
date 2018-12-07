@@ -19,7 +19,7 @@ public class Strings {
 		try {
 			enLocale.load(new InputStreamReader(Strings.class.getResourceAsStream("/strings_en.properties"), Charset.forName("UTF-8")));
 			deLocale.load(new InputStreamReader(Strings.class.getResourceAsStream("/strings_de.properties"), Charset.forName("UTF-8")));
-		}catch(IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -29,8 +29,7 @@ public class Strings {
 	 * @param language The language of the desired String
 	 * @return The requested String
 	 */
-	@Deprecated
-	public static String getString(String key, Lang language) {
+	private static String getString(String key, Lang language) {
 		return (language == Lang.EN ? enLocale : deLocale).getProperty(key);
 	}
 
@@ -43,11 +42,11 @@ public class Strings {
 	}
 
 	public static String getString(String key, MessageReceivedEvent event) {
-		return getString(key,event.getAuthor().getIdLong());
+		return getString(key, event.getAuthor().getIdLong());
 	}
 
 	public static String parseLang(Lang lang) {
-		switch(lang) {
+		switch (lang) {
 			case EN:
 				return "EN";
 			case DE:
@@ -58,7 +57,7 @@ public class Strings {
 	}
 
 	public static Lang parseLang(String string) {
-		switch(string) {
+		switch (string) {
 			case "EN":
 				return Lang.EN;
 			case "DE":

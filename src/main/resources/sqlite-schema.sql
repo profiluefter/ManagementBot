@@ -9,5 +9,5 @@ create unique index if not exists "users_discord-id_uindex" on users ("discord-i
 create table IF NOT EXISTS permissions
 (
   "discord-id" int not null,
-  permission text
+  permission   text
 );
