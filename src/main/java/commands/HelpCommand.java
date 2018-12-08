@@ -16,14 +16,14 @@ public class HelpCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		List<MessageEmbed.Field> fields = new ArrayList<>();
-		for(Command command : CommandHandler.getCommands().values()) {
+		for (Command command : CommandHandler.getCommands().values()) {
 			fields.add(new MessageEmbed.Field(command.getName(),
 					command.getHelp(event) == null ?
-							Strings.getString("help.notAvailable", event.getAuthor().getIdLong()) :
+							Strings.getString("help.notAvailable", event) :
 							command.getHelp(event), false));
 		}
 		EmbedBuilder embedBuilder =
-				new EmbedBuilder().setTitle(Strings.getString("help.title", event.getAuthor().getIdLong())).setColor(Color.BLUE);
+				new EmbedBuilder().setTitle(Strings.getString("help.title", event)).setColor(Color.BLUE);
 		fields.forEach(embedBuilder::addField);
 		sendMessage(embedBuilder.build(), event.getTextChannel());
 		return false;
@@ -36,6 +36,6 @@ public class HelpCommand implements Command {
 
 	@Override
 	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("help.help", event.getAuthor().getIdLong());
+		return Strings.getString("help.help", event);
 	}
 }

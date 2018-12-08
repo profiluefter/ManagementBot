@@ -16,7 +16,7 @@ public class ClearCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent e) {
 		if (args.size() < 1) {
-			sendEmbedWithLocalisation(Color.RED,"error","clear.missingCount",e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
+			sendEmbedWithLocalisation(Color.RED, "error", "clear.missingCount", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
 		}
 
@@ -24,7 +24,7 @@ public class ClearCommand implements Command {
 		try {
 			numb = Integer.parseInt(args.get(0));
 		} catch (NumberFormatException ex) {
-			sendEmbedWithLocalisation(Color.RED,"error","clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
+			sendEmbedWithLocalisation(Color.RED, "error", "clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
 		}
 
@@ -32,9 +32,9 @@ public class ClearCommand implements Command {
 			List<Message> mgs = new MessageHistory(e.getTextChannel()).retrievePast(numb).complete();
 			e.getTextChannel().deleteMessages(mgs).queue();
 
-			sendEmbedWithLocalisation(Color.GREEN,"success","clear.success",e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
+			sendEmbedWithLocalisation(Color.GREEN, "success", "clear.success", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 		} else {
-			sendEmbedWithLocalisation(Color.RED,"error","clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
+			sendEmbedWithLocalisation(Color.RED, "error", "clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 		}
 		return false;
 	}
@@ -45,6 +45,6 @@ public class ClearCommand implements Command {
 	}
 
 	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("clear.help",event.getAuthor().getIdLong());
+		return Strings.getString("clear.help", event);
 	}
 }

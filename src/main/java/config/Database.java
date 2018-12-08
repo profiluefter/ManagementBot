@@ -1,53 +1,73 @@
 package config;
 
-import util.Strings;
 import org.slf4j.LoggerFactory;
+import util.SQLScriptRunner;
+import util.Strings;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.*;
-import java.util.stream.Collectors;
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 	private static Connection sql;
 
 	/**
 	 * Loads userdata from the database
-	 * @param discordId The discord-id of the requested user
+	 *
+	 * @param discordID The discord-id of the requested user
 	 * @return The userdata as a result set
 	 */
-	static ResultSet loadUser(long discordId) {
-		if(sql == null) {
+	static ResultSet loadUser(long discordID) {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("SELECT * FROM users where 'discord-id'=?");
-			statement.setLong(1, discordId);
-			return statement.executeQuery();
-		}catch(SQLException e) {
+			return sql.createStatement().executeQuery("SELECT * FROM users WHERE discordID=" + discordID);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	static List<String> loadPermissions(long discordID) {
+		if (sql == null) {
+			throw new RuntimeException("SQL not connected");
+		}
+		ResultSet resultSet;
+		try {
+			resultSet = sql.createStatement().executeQuery("SELECT * FROM permissions WHERE discordID=" + discordID);
+			List<String> permissions = new ArrayList<>();
+
+			while (resultSet.next())
+				permissions.add(resultSet.getString(2));
+
+			return permissions;
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	/**
 	 * Saves userdata to the database
+	 *
 	 * @param user The User object to save
 	 */
 	static void saveUser(User user) {
-		if(sql == null) {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			PreparedStatement statement = sql.prepareStatement("INSERT OR REPLACE INTO users ('discord-id', language) VALUES (?,?)");
-			statement.setLong(1,user.getDiscordid());
-			statement.setString(2, Strings.parseLang(user.getLanguage()));
-			int affectedRows = statement.executeUpdate();
-			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordid() + "! Affected " + affectedRows + " rows!");
-		}catch(SQLException e) {
+			Statement userStatement = sql.createStatement();
+			int affectedRows = userStatement.executeUpdate("INSERT OR REPLACE INTO users (discordID, language) VALUES (" + user.getDiscordId() + ",'" + Strings.parseLang(user.getLanguage()) + "')");
+
+			Statement permissionStatement = sql.createStatement();
+			for (String permission : user.getPermissions()) {
+				affectedRows += permissionStatement.executeUpdate("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (" + user.getDiscordId() + ",'" + permission + "')");
+			}
+
+			sql.commit();
+			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordId() + "! Affected " + affectedRows + " rows!");
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -59,20 +79,18 @@ public class Database {
 		try {
 			sql = DriverManager.getConnection("jdbc:sqlite:db.sqlite");
 			runDefaultSQL();
-		}catch(SQLException | URISyntaxException | IOException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static void runDefaultSQL() throws URISyntaxException, IOException, SQLException {
-		if(sql == null) {
+	private static void runDefaultSQL() {
+		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		String sqliteCommand = new BufferedReader(new InputStreamReader(Database.class.getResourceAsStream("/sqlite-schema.sql"))).lines().collect(Collectors.joining("\n"));
-
 		LoggerFactory.getLogger(Database.class).info("Running default SQL...");
-		Statement statement = sql.createStatement();
-		statement.execute(sqliteCommand);
+		SQLScriptRunner runner = new SQLScriptRunner(sql);
+		runner.runScript(new InputStreamReader(Database.class.getResourceAsStream("/sqlite-schema.sql")));
 		LoggerFactory.getLogger(Database.class).info("Successfully ran default SQL!");
 	}
 }
