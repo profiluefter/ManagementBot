@@ -23,12 +23,22 @@ public class Config {
 		save();
 	}
 
+	public static void cleanUp() {
+		save();
+		properties = null;
+	}
+
 	public static String get(String key) {
 		return properties.getProperty(key);
 	}
 
 	public static void set(String key, String value) {
 		properties.setProperty(key, value);
+		save();
+	}
+
+	public static void remove(String key) {
+		properties.remove(key);
 		save();
 	}
 

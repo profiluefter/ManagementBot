@@ -84,6 +84,16 @@ public class Database {
 		}
 	}
 
+	public static void cleanUp() {
+		try {
+			sql.commit();
+			sql.close();
+			sql = null;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private static void runDefaultSQL() {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");

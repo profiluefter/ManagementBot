@@ -69,7 +69,7 @@ public class User {
 	}
 
 	public void addPermission(String permission) {
-		if(!permissions.contains(permission)) {
+		if (!permissions.contains(permission)) {
 			permissions.add(permission);
 			Database.saveUser(this);
 		}
