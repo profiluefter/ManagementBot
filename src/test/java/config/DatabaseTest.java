@@ -22,7 +22,7 @@ public class DatabaseTest {
 
 	@After
 	public void tearDown() throws Exception {
-		//TODO: Remove test entry
+		Database.deleteUser(User.loadUser(123456789L));
 		Database.cleanUp();
 	}
 

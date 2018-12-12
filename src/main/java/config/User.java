@@ -57,6 +57,11 @@ public class User {
 		return loadUser(event.getAuthor().getIdLong());
 	}
 
+	public static void deleteUser(User user) {
+		loadedUsers.remove(user.getDiscordId());
+		Database.deleteUser(user);
+	}
+
 	/**
 	 * @return The discord-id of the user.
 	 */

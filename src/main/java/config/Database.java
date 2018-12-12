@@ -72,6 +72,25 @@ public class Database {
 		}
 	}
 
+	static void deleteUser(User user) {
+		if (sql == null) {
+			throw new RuntimeException("SQL not connected");
+		}
+		try {
+			Statement userStatement = sql.createStatement();
+			int affectedRows = userStatement.executeUpdate("DELETE FROM users WHERE discordID=" + user.getDiscordId() + ";");
+
+			Statement permissionStatement = sql.createStatement();
+			affectedRows += permissionStatement.executeUpdate("DELETE FROM permissions WHERE discordID=" + user.getDiscordId() + ";");
+
+			sql.commit();
+			LoggerFactory.getLogger(Database.class).info("Successfully deleted " + affectedRows + " entries from user " + user.getDiscordId() + "!");
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
 	/**
 	 * Initializes the connection to the database and ensures that the required data schema is created
 	 */
