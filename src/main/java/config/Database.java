@@ -23,7 +23,9 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			return sql.createStatement().executeQuery("SELECT * FROM users WHERE discordID=" + discordID);
+			PreparedStatement preparedStatement = sql.prepareStatement("SELECT * FROM users WHERE discordID=?");
+			preparedStatement.setLong(1,discordID);
+			return preparedStatement.executeQuery();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -33,9 +35,10 @@ public class Database {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		ResultSet resultSet;
 		try {
-			resultSet = sql.createStatement().executeQuery("SELECT * FROM permissions WHERE discordID=" + discordID);
+			PreparedStatement preparedStatement = sql.prepareStatement("SELECT * FROM permissions WHERE discordID=?");
+			preparedStatement.setLong(1,discordID);
+			ResultSet resultSet = preparedStatement.executeQuery();
 			List<String> permissions = new ArrayList<>();
 
 			while (resultSet.next())
@@ -57,12 +60,16 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-			Statement userStatement = sql.createStatement();
-			int affectedRows = userStatement.executeUpdate("INSERT OR REPLACE INTO users (discordID, language) VALUES (" + user.getDiscordId() + ",'" + Strings.parseLang(user.getLanguage()) + "')");
+			PreparedStatement userStatement = sql.prepareStatement("INSERT OR REPLACE INTO users (discordID, language) VALUES (?,?)");
+			userStatement.setLong(1,user.getDiscordId());
+			userStatement.setString(2,Strings.parseLang(user.getLanguage()));
+			int affectedRows = userStatement.executeUpdate();
 
-			Statement permissionStatement = sql.createStatement();
+			PreparedStatement permissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
+			permissionStatement.setLong(1,user.getDiscordId());
 			for (String permission : user.getPermissions()) {
-				affectedRows += permissionStatement.executeUpdate("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (" + user.getDiscordId() + ",'" + permission + "')");
+				permissionStatement.setString(2,permission);
+				affectedRows += permissionStatement.executeUpdate();
 			}
 
 			sql.commit();
