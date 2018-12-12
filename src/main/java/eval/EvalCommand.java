@@ -56,12 +56,12 @@ public class EvalCommand implements Command {
 				writer = new DiscordChannelWriter(event.getTextChannel()) {
 					@Override
 					public void sendAll() {
-						buffer.forEach((channel, strings) -> JDAUtil.sendMessage(new MessageBuilder().appendCodeBlock(String.join("", strings).replaceAll(Pattern.quote(root.toString()),""),"").build(), channel));
+						buffer.forEach((channel, strings) -> JDAUtil.sendMessage(new MessageBuilder().appendCodeBlock(String.join("", strings).replaceAll(Pattern.quote(root.toString()), ""), "").build(), channel));
 					}
 				};
 				boolean success = compiler.getTask(writer, null, null, null, null, fileManager.getJavaFileObjectsFromFiles(Collections.singleton(sourceFile))).call();
 
-				if(success) {
+				if (success) {
 					RestrictingClassLoader classLoader = new RestrictingClassLoader(new URL[]{root.toURI().toURL()});
 					Class<?> cls = Class.forName("eval.environment." + className, true, classLoader);
 
@@ -70,7 +70,7 @@ public class EvalCommand implements Command {
 					method.setAccessible(true);
 					method.invoke(null, new Object[]{new String[]{}});
 				} else {
-					throw new IllegalArgumentException(Strings.getString("eval.compileError",event));
+					throw new IllegalArgumentException(Strings.getString("eval.compileError", event));
 				}
 			} catch (InvocationTargetException e) {
 				JDAUtil.sendMessage(Strings.getString("eval.classNotFound", event) + " " + e.getCause().getCause().getMessage(), event.getTextChannel());

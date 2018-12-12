@@ -24,7 +24,7 @@ public class Database {
 		}
 		try {
 			PreparedStatement preparedStatement = sql.prepareStatement("SELECT * FROM users WHERE discordID=?");
-			preparedStatement.setLong(1,discordID);
+			preparedStatement.setLong(1, discordID);
 			return preparedStatement.executeQuery();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -37,7 +37,7 @@ public class Database {
 		}
 		try {
 			PreparedStatement preparedStatement = sql.prepareStatement("SELECT * FROM permissions WHERE discordID=?");
-			preparedStatement.setLong(1,discordID);
+			preparedStatement.setLong(1, discordID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<String> permissions = new ArrayList<>();
 
@@ -61,14 +61,15 @@ public class Database {
 		}
 		try {
 			PreparedStatement userStatement = sql.prepareStatement("INSERT OR REPLACE INTO users (discordID, language) VALUES (?,?)");
-			userStatement.setLong(1,user.getDiscordId());
-			userStatement.setString(2,Strings.parseLang(user.getLanguage()));
+			userStatement.setLong(1, user.getDiscordId());
+			userStatement.setString(2, Strings.parseLang(user.getLanguage()));
 			int affectedRows = userStatement.executeUpdate();
 
+			//TODO: Remove old permissions
 			PreparedStatement permissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
-			permissionStatement.setLong(1,user.getDiscordId());
+			permissionStatement.setLong(1, user.getDiscordId());
 			for (String permission : user.getPermissions()) {
-				permissionStatement.setString(2,permission);
+				permissionStatement.setString(2, permission);
 				affectedRows += permissionStatement.executeUpdate();
 			}
 
@@ -95,7 +96,6 @@ public class Database {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	/**

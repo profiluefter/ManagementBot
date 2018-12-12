@@ -73,6 +73,8 @@ public class User {
 		return permissions;
 	}
 
+	//TODO: Remove permission
+
 	public void addPermission(String permission) {
 		if (!permissions.contains(permission)) {
 			permissions.add(permission);

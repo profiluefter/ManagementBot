@@ -20,7 +20,7 @@ public class DiscordChannelWriter extends Writer {
 	}
 
 	public void sendAll() {
-		buffer.forEach((channel, strings) -> JDAUtil.sendMessage(new MessageBuilder().appendCodeBlock(String.join("", strings),"").build(), channel));
+		buffer.forEach((channel, strings) -> JDAUtil.sendMessage(new MessageBuilder().appendCodeBlock(String.join("", strings), "").build(), channel));
 	}
 
 	@Override
