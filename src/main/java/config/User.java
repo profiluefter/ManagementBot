@@ -73,7 +73,13 @@ public class User {
 		return permissions;
 	}
 
-	//TODO: Remove permission
+	public void removePermission(String permission) {
+	    if(permissions.contains(permission)) {
+	    permissions.remove(permission);
+	    Database.removePermission(getDiscordID(),permission);
+    }
+
+	}
 
 	public void addPermission(String permission) {
 		if (!permissions.contains(permission)) {

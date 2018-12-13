@@ -49,6 +49,18 @@ public class Database {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	static void removePermission(long discordID, String permission) {
+		if (sql == null) {
+			throw new RuntimeException("SQL not connected");
+		}
+		try {
+		    PreparedStatement preparedStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=? AND permission=?");
+		    
+	    } catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	/**
 	 * Saves userdata to the database
