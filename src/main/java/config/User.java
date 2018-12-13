@@ -59,7 +59,11 @@ public class User {
 
 	public static void deleteUser(User user) {
 		loadedUsers.remove(user.getDiscordID());
-		Database.deleteUser(user);
+		try {
+			Database.deleteUser(user);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -76,7 +80,11 @@ public class User {
 	public void removePermission(String permission) {
 		if (permissions.contains(permission)) {
 			permissions.remove(permission);
-			Database.removePermission(getDiscordID(), permission);
+			try {
+				Database.removePermission(getDiscordID(), permission);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 	}
@@ -84,7 +92,11 @@ public class User {
 	public void addPermission(String permission) {
 		if (!permissions.contains(permission)) {
 			permissions.add(permission);
-			Database.saveUser(this);
+			try {
+				Database.addPermission(getDiscordID(),permission);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -102,6 +114,10 @@ public class User {
 	 */
 	public void setLanguage(Strings.Lang language) {
 		this.language = language;
-		Database.saveUser(this);
+		try {
+			Database.setLanguage(getDiscordID(), Strings.parseLang(language));
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

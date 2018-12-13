@@ -21,7 +21,7 @@ public class DatabaseTest {
 	}
 
 	@AfterClass
-	public static void tearDown() {
+	public static void tearDown() throws SQLException {
 		Database.deleteUser(User.loadUser(123456789L));
 		Database.cleanUp();
 	}
@@ -34,14 +34,14 @@ public class DatabaseTest {
 	}
 
 	@Test
-	public void loadPermissions() {
+	public void loadPermissions() throws SQLException {
 		List<String> strings = Database.loadPermissions(123456789L);
 		Assert.assertNotNull(strings);
 		Assert.assertEquals("testPermission", strings.get(0));
 	}
 
 	@Test
-	public void removePermission() {
+	public void removePermission() throws SQLException {
 		User.loadUser(123456789L).removePermission("testPermission");
 		List<String> strings = Database.loadPermissions(123456789L);
 		Assert.assertEquals(0,strings.size());
