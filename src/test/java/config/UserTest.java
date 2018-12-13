@@ -6,7 +6,7 @@ import util.Strings;
 public class UserTest {
 
 	@BeforeClass
-	public static void setUp() throws Exception {
+	public static void setUp() {
 		Database.init();
 		User user = User.loadUser(123456789L);
 		user.setLanguage(Strings.Lang.DE);
@@ -14,7 +14,7 @@ public class UserTest {
 	}
 
 	@AfterClass
-	public static void tearDown() throws Exception {
+	public static void tearDown() {
 		User user = User.loadUser(123456789L);
 		User.deleteUser(user);
 		Database.cleanUp();
@@ -40,10 +40,9 @@ public class UserTest {
 	@Test
 	public void getDiscordId() {
 		User user = User.loadUser(123456789L);
-		Assert.assertEquals(123456789L, user.getDiscordId());
+		Assert.assertEquals(123456789L, user.getDiscordID());
 	}
 
-	@Ignore //TODO: see UserTest#addPermission()
 	@Test
 	public void getPermissions() {
 		User user = User.loadUser(123456789L);
@@ -58,7 +57,7 @@ public class UserTest {
 		Assert.assertEquals(2, user.getPermissions().size());
 		Assert.assertTrue(user.getPermissions().contains("testPermission"));
 		Assert.assertTrue(user.getPermissions().contains("anotherTestPermission"));
-		//TODO: Remove permission
+		user.removePermission("anotherTestPermission");
 	}
 
 	@Test

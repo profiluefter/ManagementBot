@@ -61,7 +61,7 @@ public class MeCommand implements Command {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.GREEN)
 				.setTitle(event.getAuthor().getName())
-				.addField(Strings.getString("me.discordid", event), String.valueOf(user.getDiscordId()), false)
+				.addField(Strings.getString("me.discordid", event), String.valueOf(user.getDiscordID()), false)
 				.addField(Strings.getString("me.language", event), Strings.parseLang(user.getLanguage()), false)
 				.addField(Strings.getString("me.roles", event), event.getMember().getRoles().stream().map(Role::getName).collect(Collectors.joining(", ")), false);
 		sendMessage(builder.build(), event.getTextChannel());

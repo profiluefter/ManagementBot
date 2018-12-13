@@ -58,14 +58,14 @@ public class User {
 	}
 
 	public static void deleteUser(User user) {
-		loadedUsers.remove(user.getDiscordId());
+		loadedUsers.remove(user.getDiscordID());
 		Database.deleteUser(user);
 	}
 
 	/**
 	 * @return The discord-id of the user.
 	 */
-	public long getDiscordId() {
+	public long getDiscordID() {
 		return discordID;
 	}
 
@@ -74,10 +74,10 @@ public class User {
 	}
 
 	public void removePermission(String permission) {
-	    if(permissions.contains(permission)) {
-	    permissions.remove(permission);
-	    Database.removePermission(getDiscordID(),permission);
-    }
+		if (permissions.contains(permission)) {
+			permissions.remove(permission);
+			Database.removePermission(getDiscordID(), permission);
+		}
 
 	}
 

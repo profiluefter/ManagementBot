@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Only change what is needed (permissions)
 public class Database {
 	private static Connection sql;
 
@@ -49,15 +50,17 @@ public class Database {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	static void removePermission(long discordID, String permission) {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		try {
-		    PreparedStatement preparedStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=? AND permission=?");
-		    
-	    } catch (SQLException e) {
+			PreparedStatement preparedStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=? AND permission=?");
+			preparedStatement.setLong(1, discordID);
+			preparedStatement.setString(2, permission);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -73,20 +76,19 @@ public class Database {
 		}
 		try {
 			PreparedStatement userStatement = sql.prepareStatement("INSERT OR REPLACE INTO users (discordID, language) VALUES (?,?)");
-			userStatement.setLong(1, user.getDiscordId());
+			userStatement.setLong(1, user.getDiscordID());
 			userStatement.setString(2, Strings.parseLang(user.getLanguage()));
 			int affectedRows = userStatement.executeUpdate();
 
-			//TODO: Remove old permissions
 			PreparedStatement permissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
-			permissionStatement.setLong(1, user.getDiscordId());
+			permissionStatement.setLong(1, user.getDiscordID());
 			for (String permission : user.getPermissions()) {
 				permissionStatement.setString(2, permission);
 				affectedRows += permissionStatement.executeUpdate();
 			}
 
 			sql.commit();
-			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordId() + "! Affected " + affectedRows + " rows!");
+			LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordID() + "! Affected " + affectedRows + " rows!");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -98,13 +100,13 @@ public class Database {
 		}
 		try {
 			Statement userStatement = sql.createStatement();
-			int affectedRows = userStatement.executeUpdate("DELETE FROM users WHERE discordID=" + user.getDiscordId() + ";");
+			int affectedRows = userStatement.executeUpdate("DELETE FROM users WHERE discordID=" + user.getDiscordID() + ";");
 
 			Statement permissionStatement = sql.createStatement();
-			affectedRows += permissionStatement.executeUpdate("DELETE FROM permissions WHERE discordID=" + user.getDiscordId() + ";");
+			affectedRows += permissionStatement.executeUpdate("DELETE FROM permissions WHERE discordID=" + user.getDiscordID() + ";");
 
 			sql.commit();
-			LoggerFactory.getLogger(Database.class).info("Successfully deleted " + affectedRows + " entries from user " + user.getDiscordId() + "!");
+			LoggerFactory.getLogger(Database.class).info("Successfully deleted " + affectedRows + " entries from user " + user.getDiscordID() + "!");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
