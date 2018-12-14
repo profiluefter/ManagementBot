@@ -9,9 +9,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Only change what is needed (permissions)
 public class Database {
 	private static Connection sql;
+	private static PreparedStatement loadUserStatement;
+	private static PreparedStatement loadPermissionsStatement;
+	private static PreparedStatement removePermissionStatement;
+	private static PreparedStatement saveUserStatement;
+	private static PreparedStatement savePermissionsStatement;
+	private static PreparedStatement addPermissionStatement;
+	private static PreparedStatement setLanguageStatement;
 
 	/**
 	 * Loads userdata from the database
@@ -24,9 +30,8 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 
-		PreparedStatement preparedStatement = sql.prepareStatement("SELECT * FROM users WHERE discordID=?");
-		preparedStatement.setLong(1, discordID);
-		return preparedStatement.executeQuery();
+		loadUserStatement.setLong(1, discordID);
+		return loadUserStatement.executeQuery();
 	}
 
 	static List<String> loadPermissions(long discordID) throws SQLException {
@@ -34,9 +39,8 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 
-		PreparedStatement preparedStatement = sql.prepareStatement("SELECT * FROM permissions WHERE discordID=?");
-		preparedStatement.setLong(1, discordID);
-		ResultSet resultSet = preparedStatement.executeQuery();
+		loadPermissionsStatement.setLong(1, discordID);
+		ResultSet resultSet = loadPermissionsStatement.executeQuery();
 		List<String> permissions = new ArrayList<>();
 
 		while (resultSet.next())
@@ -50,10 +54,9 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 
-		PreparedStatement preparedStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=? AND permission=?");
-		preparedStatement.setLong(1, discordID);
-		preparedStatement.setString(2, permission);
-		preparedStatement.executeUpdate();
+		removePermissionStatement.setLong(1, discordID);
+		removePermissionStatement.setString(2, permission);
+		removePermissionStatement.executeUpdate();
 	}
 
 	/**
@@ -66,22 +69,21 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 
-		PreparedStatement userStatement = sql.prepareStatement("INSERT OR REPLACE INTO users (discordID, language) VALUES (?,?)");
-		userStatement.setLong(1, user.getDiscordID());
-		userStatement.setString(2, Strings.parseLang(user.getLanguage()));
-		int affectedRows = userStatement.executeUpdate();
+		saveUserStatement.setLong(1, user.getDiscordID());
+		saveUserStatement.setString(2, Strings.parseLang(user.getLanguage()));
+		int affectedRows = saveUserStatement.executeUpdate();
 
-		PreparedStatement permissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
-		permissionStatement.setLong(1, user.getDiscordID());
+		savePermissionsStatement.setLong(1, user.getDiscordID());
 		for (String permission : user.getPermissions()) {
-			permissionStatement.setString(2, permission);
-			affectedRows += permissionStatement.executeUpdate();
+			savePermissionsStatement.setString(2, permission);
+			affectedRows += savePermissionsStatement.executeUpdate();
 		}
 
 		sql.commit();
 		LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordID() + "! Affected " + affectedRows + " rows!");
 	}
 
+	//TODO
 	static void deleteUser(User user) throws SQLException {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
@@ -132,23 +134,35 @@ public class Database {
 		LoggerFactory.getLogger(Database.class).info("Successfully ran default SQL!");
 	}
 
+	private static void perpareStatements() {
+		loadUserStatement = sql.prepareStatement("SELECT * FROM users WHERE discordID=?");
+		loadPermissionsStatement = sql.prepareStatement("SELECT * FROM permissions WHERE discordID=?");
+		removePermissionStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=? AND permission=?");
+		saveUserStatement = sql.prepareStatement("INSERT OR REPLACE INTO users (discordID, language) VALUES (?,?)");
+		savePermissionsStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
+
+	}
+
 	static void addPermission(long discordID, String permission) throws SQLException {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		PreparedStatement statement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
-		statement.setLong(1, discordID);
-		statement.setString(2, permission);
-		statement.executeUpdate();
+		addPermissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
+		addPermissionStatement.setLong(1, discordID);
+		addPermissionStatement.setString(2, permission);
+		addPermissionStatement.executeUpdate();
+		sql.commit();
 	}
 
 	static void setLanguage(long discordID, String lang) throws SQLException {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		PreparedStatement statement = sql.prepareStatement("UPDATE users SET language=? WHERE discordID=?");
-		statement.setLong(1,discordID);
-		statement.setString(2,lang);
-		statement.executeUpdate();
+		LoggerFactory.getLogger(Database.class).info("setLang " + lang);
+		setLanguageStatement = sql.prepareStatement("UPDATE users SET language=? WHERE discordID=?");
+		setLanguageStatement.setString(1,lang);
+		setLanguageStatement.setLong(2,discordID);
+		setLanguageStatement.executeUpdate();
+		sql.commit();
 	}
 }
