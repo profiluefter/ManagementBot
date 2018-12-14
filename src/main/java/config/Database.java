@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 public class Database {
 	private static Connection sql;
 	private static PreparedStatement loadUserStatement;
@@ -18,6 +19,8 @@ public class Database {
 	private static PreparedStatement savePermissionsStatement;
 	private static PreparedStatement addPermissionStatement;
 	private static PreparedStatement setLanguageStatement;
+	private static PreparedStatement deletePermissionsStatement;
+	private static PreparedStatement deleteUserStatement;
 
 	/**
 	 * Loads userdata from the database
@@ -83,17 +86,16 @@ public class Database {
 		LoggerFactory.getLogger(Database.class).info("Successfully saved user with id " + user.getDiscordID() + "! Affected " + affectedRows + " rows!");
 	}
 
-	//TODO
 	static void deleteUser(User user) throws SQLException {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 
-		Statement userStatement = sql.createStatement();
-		int affectedRows = userStatement.executeUpdate("DELETE FROM users WHERE discordID=" + user.getDiscordID() + ";");
+		deleteUserStatement.setLong(1,user.getDiscordID());
+		int affectedRows = deleteUserStatement.executeUpdate();
 
-		Statement permissionStatement = sql.createStatement();
-		affectedRows += permissionStatement.executeUpdate("DELETE FROM permissions WHERE discordID=" + user.getDiscordID() + ";");
+		deletePermissionsStatement.setLong(1,user.getDiscordID());
+		affectedRows += deletePermissionsStatement.executeUpdate();
 
 		sql.commit();
 		LoggerFactory.getLogger(Database.class).info("Successfully deleted " + affectedRows + " entries from user " + user.getDiscordID() + "!");
@@ -105,10 +107,11 @@ public class Database {
 	public static void init() {
 		try {
 			sql = DriverManager.getConnection("jdbc:sqlite:db.sqlite");
+			runDefaultSQL();
+			prepareStatements();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		runDefaultSQL();
 	}
 
 	/**
@@ -134,20 +137,22 @@ public class Database {
 		LoggerFactory.getLogger(Database.class).info("Successfully ran default SQL!");
 	}
 
-	private static void perpareStatements() {
+	private static void prepareStatements() throws SQLException {
 		loadUserStatement = sql.prepareStatement("SELECT * FROM users WHERE discordID=?");
 		loadPermissionsStatement = sql.prepareStatement("SELECT * FROM permissions WHERE discordID=?");
 		removePermissionStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=? AND permission=?");
 		saveUserStatement = sql.prepareStatement("INSERT OR REPLACE INTO users (discordID, language) VALUES (?,?)");
 		savePermissionsStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
-
+		addPermissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
+		setLanguageStatement = sql.prepareStatement("UPDATE users SET language=? WHERE discordID=?");
+		deleteUserStatement = sql.prepareStatement("DELETE FROM users WHERE discordID=?");
+		deletePermissionsStatement = sql.prepareStatement("DELETE FROM permissions WHERE discordID=?");
 	}
 
 	static void addPermission(long discordID, String permission) throws SQLException {
 		if (sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
-		addPermissionStatement = sql.prepareStatement("INSERT OR REPLACE INTO permissions (discordID, permission) VALUES (?,?)");
 		addPermissionStatement.setLong(1, discordID);
 		addPermissionStatement.setString(2, permission);
 		addPermissionStatement.executeUpdate();
@@ -159,7 +164,6 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		LoggerFactory.getLogger(Database.class).info("setLang " + lang);
-		setLanguageStatement = sql.prepareStatement("UPDATE users SET language=? WHERE discordID=?");
 		setLanguageStatement.setString(1,lang);
 		setLanguageStatement.setLong(2,discordID);
 		setLanguageStatement.executeUpdate();
