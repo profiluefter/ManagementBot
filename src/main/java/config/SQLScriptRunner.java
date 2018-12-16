@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package util;
+package config;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -25,7 +25,9 @@ import java.util.regex.Pattern;
 /**
  * @author Clinton Begin
  */
-public class SQLScriptRunner {
+@SuppressWarnings("ALL")
+		//Not my code
+class SQLScriptRunner {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
@@ -47,7 +49,7 @@ public class SQLScriptRunner {
 	private String delimiter = DEFAULT_DELIMITER;
 	private boolean fullLineDelimiter;
 
-	public SQLScriptRunner(Connection connection) {
+	SQLScriptRunner(Connection connection) {
 		this.connection = connection;
 	}
 
@@ -94,7 +96,7 @@ public class SQLScriptRunner {
 		this.fullLineDelimiter = fullLineDelimiter;
 	}
 
-	public void runScript(Reader reader) {
+	void runScript(Reader reader) {
 		setAutoCommit();
 
 		try {

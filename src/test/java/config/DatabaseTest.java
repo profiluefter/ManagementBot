@@ -44,11 +44,11 @@ public class DatabaseTest {
 	public void removePermission() throws SQLException {
 		User.loadUser(123456789L).removePermission("testPermission");
 		List<String> strings = Database.loadPermissions(123456789L);
-		Assert.assertEquals(0,strings.size());
+		Assert.assertEquals(0, strings.size());
 		User.loadUser(123456789L).addPermission("testPermission");
 		List<String> newPermissions = Database.loadPermissions(123456789L);
-		Assert.assertEquals(1,newPermissions.size());
-		Assert.assertEquals("testPermission",newPermissions.get(0));
+		Assert.assertEquals(1, newPermissions.size());
+		Assert.assertEquals("testPermission", newPermissions.get(0));
 	}
 
 	@Test

@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
 public class EvalCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		if (!event.getAuthor().getName().equals("Profilüfter"))
-			return true;
 		synchronized (this) {
 			DiscordChannelWriter writer = null;
 			try {

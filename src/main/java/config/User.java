@@ -57,6 +57,7 @@ public class User {
 		return loadUser(event.getAuthor().getIdLong());
 	}
 
+	@SuppressWarnings("WeakerAccess") //API method
 	public static void deleteUser(User user) {
 		loadedUsers.remove(user.getDiscordID());
 		try {
@@ -73,10 +74,12 @@ public class User {
 		return discordID;
 	}
 
+	@SuppressWarnings("WeakerAccess") //API method
 	public List<String> getPermissions() {
 		return permissions;
 	}
 
+	@SuppressWarnings("WeakerAccess") //API method
 	public void removePermission(String permission) {
 		if (permissions.contains(permission)) {
 			permissions.remove(permission);
@@ -89,11 +92,12 @@ public class User {
 
 	}
 
+	@SuppressWarnings("WeakerAccess") //API method
 	public void addPermission(String permission) {
 		if (!permissions.contains(permission)) {
 			permissions.add(permission);
 			try {
-				Database.addPermission(getDiscordID(),permission);
+				Database.addPermission(getDiscordID(), permission);
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}

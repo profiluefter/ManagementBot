@@ -5,7 +5,6 @@ import config.Config;
 import config.Database;
 import eval.EvalCommand;
 import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.reflections.Reflections;
@@ -33,13 +32,11 @@ public class Main {
 		addCommands();
 		addListeners(jdaBuilder);
 
-		JDA jda;
 		try {
-			jda = jdaBuilder.build().awaitReady();
-		} catch (LoginException | InterruptedException e) {
+			jdaBuilder.build();
+		} catch (LoginException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**

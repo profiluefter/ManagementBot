@@ -1,7 +1,6 @@
 package config;
 
 import org.slf4j.LoggerFactory;
-import util.SQLScriptRunner;
 import util.Strings;
 
 import java.io.InputStreamReader;
@@ -91,10 +90,10 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 
-		deleteUserStatement.setLong(1,user.getDiscordID());
+		deleteUserStatement.setLong(1, user.getDiscordID());
 		int affectedRows = deleteUserStatement.executeUpdate();
 
-		deletePermissionsStatement.setLong(1,user.getDiscordID());
+		deletePermissionsStatement.setLong(1, user.getDiscordID());
 		affectedRows += deletePermissionsStatement.executeUpdate();
 
 		sql.commit();
@@ -117,7 +116,7 @@ public class Database {
 	/**
 	 * Transmits all changes and disconnects.
 	 */
-	public static void cleanUp() {
+	static void cleanUp() {
 		try {
 			sql.commit();
 			sql.close();
@@ -164,8 +163,8 @@ public class Database {
 			throw new RuntimeException("SQL not connected");
 		}
 		LoggerFactory.getLogger(Database.class).info("setLang " + lang);
-		setLanguageStatement.setString(1,lang);
-		setLanguageStatement.setLong(2,discordID);
+		setLanguageStatement.setString(1, lang);
+		setLanguageStatement.setLong(2, discordID);
 		setLanguageStatement.executeUpdate();
 		sql.commit();
 	}

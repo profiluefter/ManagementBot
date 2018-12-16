@@ -2,6 +2,9 @@ package util;
 
 import config.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,27 +28,58 @@ public class Strings {
 	}
 
 	/**
-	 * @param key      The key of the String to return
-	 * @param language The language of the desired String
-	 * @return The requested String
+	 * Reads an entry of the strings file.
+	 *
+	 * @param key      The key of the string to return.
+	 * @param language The language of the desired string.
+	 * @return The requested string.
 	 */
 	private static String getString(String key, Lang language) {
 		return (language == Lang.EN ? enLocale : deLocale).getProperty(key);
 	}
 
-	public static String getString(String key, User user) {
+	/**
+	 * Reads an entry of the strings file.
+	 *
+	 * @param key  The key of the string to return.
+	 * @param user The user to read the desired language from.
+	 * @return The requested string.
+	 */
+	public static String getString(String key, @NotNull User user) {
 		return getString(key, user.getLanguage());
 	}
 
+	/**
+	 * Reads an entry of the strings file.
+	 *
+	 * @param key    The key of the string to return.
+	 * @param userId The userID of the user to read the language from.
+	 * @return The requested string.
+	 */
 	public static String getString(String key, long userId) {
 		return getString(key, User.loadUser(userId));
 	}
 
-	public static String getString(String key, MessageReceivedEvent event) {
+	/**
+	 * Reads an entry of the strings file.
+	 *
+	 * @param key   The key of the string to return.
+	 * @param event The event to read the user and the preferred language of the user.
+	 * @return The requested string.
+	 */
+	public static String getString(String key, @NotNull MessageReceivedEvent event) {
 		return getString(key, event.getAuthor().getIdLong());
 	}
 
-	public static String parseLang(Lang lang) {
+	/**
+	 * Converts the enum {@link Lang} to a string.
+	 *
+	 * @param lang The language.
+	 * @return The two letter code of that language.
+	 */
+	@NotNull
+	@Contract(pure = true)
+	public static String parseLang(@NotNull Lang lang) {
 		switch (lang) {
 			case EN:
 				return "EN";
@@ -56,7 +90,15 @@ public class Strings {
 		}
 	}
 
-	public static Lang parseLang(String string) {
+	/**
+	 * Converts a string to an enum of type {@link Lang}.
+	 *
+	 * @param string The two letter code of that language.
+	 * @return The corresponding enum entry or <code>null</code> if the language was not found.
+	 */
+	@Nullable
+	@Contract(pure = true)
+	public static Lang parseLang(@NotNull String string) {
 		switch (string) {
 			case "EN":
 				return Lang.EN;
@@ -67,7 +109,17 @@ public class Strings {
 		}
 	}
 
+	/**
+	 * An enum with all supported languages.
+	 */
 	public enum Lang {
-		EN, DE
+		/**
+		 * English
+		 */
+		EN,
+		/**
+		 * German
+		 */
+		DE
 	}
 }
