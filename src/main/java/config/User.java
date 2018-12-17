@@ -30,7 +30,7 @@ public class User {
 	 * @return The requested user.
 	 */
 	public static User loadUser(long discordID) {
-		if (loadedUsers.containsKey(discordID)) {
+		if(loadedUsers.containsKey(discordID)) {
 			return loadedUsers.get(discordID);
 		} else {
 			try {
@@ -47,7 +47,7 @@ public class User {
 				loadedUsers.put(discordID, user);
 				LoggerFactory.getLogger(User.class).info("Loaded user " + discordID + "!");
 				return user;
-			} catch (SQLException e) {
+			} catch(SQLException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -73,7 +73,7 @@ public class User {
 		loadedUsers.remove(user.getDiscordID());
 		try {
 			Database.deleteUser(user);
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -90,7 +90,6 @@ public class User {
 	 *
 	 * @return Permissions as a {@link List} of {@link String}s.
 	 */
-	@SuppressWarnings("WeakerAccess") //API method
 	public List<String> getPermissions() {
 		return permissions;
 	}
@@ -102,11 +101,11 @@ public class User {
 	 */
 	@SuppressWarnings("WeakerAccess") //API method
 	public void removePermission(String permission) {
-		if (permissions.contains(permission)) {
+		if(permissions.contains(permission)) {
 			permissions.remove(permission);
 			try {
 				Database.removePermission(getDiscordID(), permission);
-			} catch (SQLException e) {
+			} catch(SQLException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -120,11 +119,11 @@ public class User {
 	 */
 	@SuppressWarnings("WeakerAccess") //API method
 	public void addPermission(String permission) {
-		if (!permissions.contains(permission)) {
+		if(!permissions.contains(permission)) {
 			permissions.add(permission);
 			try {
 				Database.addPermission(getDiscordID(), permission);
-			} catch (SQLException e) {
+			} catch(SQLException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -146,7 +145,7 @@ public class User {
 		this.language = language;
 		try {
 			Database.setLanguage(getDiscordID(), Strings.parseLang(language));
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}

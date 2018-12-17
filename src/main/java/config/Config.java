@@ -17,7 +17,7 @@ public class Config {
 		Properties defaultConfig = new Properties();
 		try {
 			defaultConfig.load(Config.class.getResourceAsStream("/default-config.properties"));
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 		properties = new Properties(defaultConfig);
@@ -48,7 +48,7 @@ public class Config {
 	/**
 	 * Sets a value of the config file. This does not change the default config.
 	 *
-	 * @param key The key that the entry is saved as.
+	 * @param key   The key that the entry is saved as.
 	 * @param value The value that the entry should be set to.
 	 */
 	@SuppressWarnings("WeakerAccess") //API method
@@ -71,7 +71,7 @@ public class Config {
 	private static void save() {
 		try {
 			properties.store(new FileOutputStream(configFile), "Config file for the ManagementBot");
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -81,7 +81,7 @@ public class Config {
 			//noinspection ResultOfMethodCallIgnored
 			configFile.createNewFile();
 			properties.load(new FileInputStream(configFile));
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}

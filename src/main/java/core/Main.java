@@ -18,7 +18,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		String token;
-		if ((token = System.getenv("discord.token")) == null && (token = System.getenv("DISCORD_TOKEN")) == null) {
+		if((token = System.getenv("discord.token")) == null && (token = System.getenv("DISCORD_TOKEN")) == null) {
 			throw new IllegalArgumentException("Please provide the Discord token in the system property discord.token or DISCORD_TOKEN!");
 		}
 
@@ -34,7 +34,7 @@ public class Main {
 
 		try {
 			jdaBuilder.build();
-		} catch (LoginException e) {
+		} catch(LoginException e) {
 			e.printStackTrace();
 		}
 	}
@@ -48,11 +48,11 @@ public class Main {
 
 		Reflections reflections = new Reflections("commands");
 		Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
-		for (Class<? extends Command> command : commands) {
+		for(Class<? extends Command> command : commands) {
 			try {
 				Command instance = command.getConstructor().newInstance();
 				CommandHandler.registerCommand(instance);
-			} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			} catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -67,11 +67,11 @@ public class Main {
 	private static void addListeners(JDABuilder jdaBuilder) {
 		Reflections reflections = new Reflections("listeners");
 		Set<Class<? extends ListenerAdapter>> listeners = reflections.getSubTypesOf(ListenerAdapter.class);
-		for (Class<? extends ListenerAdapter> listener : listeners) {
+		for(Class<? extends ListenerAdapter> listener : listeners) {
 			try {
 				ListenerAdapter instance = listener.getConstructor().newInstance();
 				jdaBuilder.addEventListener(instance);
-			} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			} catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 				throw new RuntimeException(e);
 			}
 		}

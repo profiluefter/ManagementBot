@@ -25,7 +25,7 @@ public class CommandHandler {
 		String invoke = split.get(0).replaceFirst(Config.get("prefix"), "");
 
 		List<String> args;
-		if (split.size() > 1)
+		if(split.size() > 1)
 			args = split.subList(1, split.size());
 		else
 			args = new ArrayList<>();
@@ -33,7 +33,7 @@ public class CommandHandler {
 		Command command = commands.getOrDefault(invoke, commands.get("help"));
 		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
 		boolean printHelp = command.execute(args, event);
-		if (printHelp) {
+		if(printHelp) {
 			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event), command.getHelp(event), event.getTextChannel());
 		}
 	}

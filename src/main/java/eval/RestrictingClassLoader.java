@@ -24,7 +24,7 @@ class RestrictingClassLoader extends URLClassLoader {
 
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		if (allowedClasses.contains(name))
+		if(allowedClasses.contains(name))
 			return super.loadClass(name);
 		else
 			return findClass(name);

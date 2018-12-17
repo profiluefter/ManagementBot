@@ -21,22 +21,22 @@ import static util.JDAUtil.sendEmbedWithLocalisation;
 //TODO: Clean this mess up
 public class EmojiCommand implements Command {
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		if (event.getMessage().getAttachments().size() == 0 && args.size() == 2) {
+		if(event.getMessage().getAttachments().size() == 0 && args.size() == 2) {
 			try {
 				InputStream stream = new URL(args.get(1)).openStream();
 				BufferedImage image = scaleImage(ImageIO.read(stream)); //This takes a while
 				byte[] data = convertImageToByteArray(image);
 
 				createEmoji(args, event, data);
-			} catch (MalformedURLException e) {
+			} catch(MalformedURLException e) {
 				sendEmbedWithLocalisation(Color.RED, "emoji.malformedUrlTitle", "emoji.malformedUrlDescription", event.getTextChannel(), User.loadUser(event));
-			} catch (IOException e) {
+			} catch(IOException e) {
 				sendEmbedWithLocalisation(Color.RED, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription", event.getTextChannel(), User.loadUser(event));
 			}
-		} else if (event.getMessage().getAttachments().size() == 1 && args.size() == 1) {
+		} else if(event.getMessage().getAttachments().size() == 1 && args.size() == 1) {
 			try {
 				Message.Attachment attachment = event.getMessage().getAttachments().get(0);
-				if (attachment.isImage()) {
+				if(attachment.isImage()) {
 					attachment.withInputStream(inputStream -> {
 						BufferedImage image = ImageIO.read(inputStream);
 						byte[] bytes = convertImageToByteArray(scaleImage(image));
@@ -45,7 +45,7 @@ public class EmojiCommand implements Command {
 				} else {
 					sendEmbedWithLocalisation(Color.RED, "emoji.onlyImagesTitle", "emoji.onlyImagesDescription", event.getTextChannel(), User.loadUser(event));
 				}
-			} catch (IOException e) {
+			} catch(IOException e) {
 				sendEmbedWithLocalisation(Color.RED, "emoji.downloadErrorTitle", "emoji.downloadErrorDescription", event.getTextChannel(), User.loadUser(event));
 			}
 		} else {

@@ -29,7 +29,7 @@ public class Database {
 	 * @return The userdata as a result set
 	 */
 	static ResultSet loadUser(long discordID) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 
@@ -38,7 +38,7 @@ public class Database {
 	}
 
 	static List<String> loadPermissions(long discordID) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 
@@ -46,14 +46,14 @@ public class Database {
 		ResultSet resultSet = loadPermissionsStatement.executeQuery();
 		List<String> permissions = new ArrayList<>();
 
-		while (resultSet.next())
+		while(resultSet.next())
 			permissions.add(resultSet.getString(2));
 
 		return permissions;
 	}
 
 	static void removePermission(long discordID, String permission) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 
@@ -68,7 +68,7 @@ public class Database {
 	 * @param user The User object to save
 	 */
 	static void saveUser(User user) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 
@@ -77,7 +77,7 @@ public class Database {
 		int affectedRows = saveUserStatement.executeUpdate();
 
 		savePermissionsStatement.setLong(1, user.getDiscordID());
-		for (String permission : user.getPermissions()) {
+		for(String permission : user.getPermissions()) {
 			savePermissionsStatement.setString(2, permission);
 			affectedRows += savePermissionsStatement.executeUpdate();
 		}
@@ -87,7 +87,7 @@ public class Database {
 	}
 
 	static void deleteUser(User user) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 
@@ -109,7 +109,7 @@ public class Database {
 			sql = DriverManager.getConnection("jdbc:sqlite:db.sqlite");
 			runDefaultSQL();
 			prepareStatements();
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -121,14 +121,14 @@ public class Database {
 		try {
 			sql.commit();
 			sql.close();
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 		sql = null;
 	}
 
 	private static void runDefaultSQL() {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		LoggerFactory.getLogger(Database.class).info("Running default SQL...");
@@ -150,7 +150,7 @@ public class Database {
 	}
 
 	static void addPermission(long discordID, String permission) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		addPermissionStatement.setLong(1, discordID);
@@ -160,7 +160,7 @@ public class Database {
 	}
 
 	static void setLanguage(long discordID, String lang) throws SQLException {
-		if (sql == null) {
+		if(sql == null) {
 			throw new RuntimeException("SQL not connected");
 		}
 		LoggerFactory.getLogger(Database.class).info("setLang " + lang);

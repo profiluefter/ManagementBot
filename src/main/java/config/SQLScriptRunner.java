@@ -100,7 +100,7 @@ class SQLScriptRunner {
 		setAutoCommit();
 
 		try {
-			if (sendFullScript) {
+			if(sendFullScript) {
 				executeFullScript(reader);
 			} else {
 				executeLineByLine(reader);
@@ -115,7 +115,7 @@ class SQLScriptRunner {
 		try {
 			BufferedReader lineReader = new BufferedReader(reader);
 			String line;
-			while ((line = lineReader.readLine()) != null) {
+			while((line = lineReader.readLine()) != null) {
 				script.append(line);
 				script.append(LINE_SEPARATOR);
 			}
@@ -123,7 +123,7 @@ class SQLScriptRunner {
 			println(command);
 			executeStatement(command);
 			commitConnection();
-		} catch (Exception e) {
+		} catch(Exception e) {
 			String message = "Error executing: " + script + ".  Cause: " + e;
 			printlnError(message);
 			throw new RuntimeException(message, e);
@@ -135,12 +135,12 @@ class SQLScriptRunner {
 		try {
 			BufferedReader lineReader = new BufferedReader(reader);
 			String line;
-			while ((line = lineReader.readLine()) != null) {
+			while((line = lineReader.readLine()) != null) {
 				handleLine(command, line);
 			}
 			commitConnection();
 			checkForMissingLineTerminator(command);
-		} catch (Exception e) {
+		} catch(Exception e) {
 			String message = "Error executing: " + command + ".  Cause: " + e;
 			printlnError(message);
 			throw new RuntimeException(message, e);
@@ -150,62 +150,62 @@ class SQLScriptRunner {
 	public void closeConnection() {
 		try {
 			connection.close();
-		} catch (Exception e) {
+		} catch(Exception e) {
 			// ignore
 		}
 	}
 
 	private void setAutoCommit() {
 		try {
-			if (autoCommit != connection.getAutoCommit()) {
+			if(autoCommit != connection.getAutoCommit()) {
 				connection.setAutoCommit(autoCommit);
 			}
-		} catch (Throwable t) {
+		} catch(Throwable t) {
 			throw new RuntimeException("Could not set AutoCommit to " + autoCommit + ". Cause: " + t, t);
 		}
 	}
 
 	private void commitConnection() {
 		try {
-			if (!connection.getAutoCommit()) {
+			if(!connection.getAutoCommit()) {
 				connection.commit();
 			}
-		} catch (Throwable t) {
+		} catch(Throwable t) {
 			throw new RuntimeException("Could not commit transaction. Cause: " + t, t);
 		}
 	}
 
 	private void rollbackConnection() {
 		try {
-			if (!connection.getAutoCommit()) {
+			if(!connection.getAutoCommit()) {
 				connection.rollback();
 			}
-		} catch (Throwable t) {
+		} catch(Throwable t) {
 			// ignore
 		}
 	}
 
 	private void checkForMissingLineTerminator(StringBuilder command) {
-		if (command != null && command.toString().trim().length() > 0) {
+		if(command != null && command.toString().trim().length() > 0) {
 			throw new RuntimeException("Line missing end-of-line terminator (" + delimiter + ") => " + command);
 		}
 	}
 
 	private void handleLine(StringBuilder command, String line) throws SQLException {
 		String trimmedLine = line.trim();
-		if (lineIsComment(trimmedLine)) {
+		if(lineIsComment(trimmedLine)) {
 			Matcher matcher = DELIMITER_PATTERN.matcher(trimmedLine);
-			if (matcher.find()) {
+			if(matcher.find()) {
 				delimiter = matcher.group(5);
 			}
 			println(trimmedLine);
-		} else if (commandReadyToExecute(trimmedLine)) {
+		} else if(commandReadyToExecute(trimmedLine)) {
 			command.append(line, 0, line.lastIndexOf(delimiter));
 			command.append(LINE_SEPARATOR);
 			println(command);
 			executeStatement(command.toString());
 			command.setLength(0);
-		} else if (trimmedLine.length() > 0) {
+		} else if(trimmedLine.length() > 0) {
 			command.append(line);
 			command.append(LINE_SEPARATOR);
 		}
@@ -221,23 +221,23 @@ class SQLScriptRunner {
 	}
 
 	private void executeStatement(String command) throws SQLException {
-		try (Statement statement = connection.createStatement()) {
+		try(Statement statement = connection.createStatement()) {
 			//Not in SQLite statement.setEscapeProcessing(escapeProcessing);
 			String sql = command;
-			if (removeCRs) {
+			if(removeCRs) {
 				sql = sql.replaceAll("\r\n", "\n");
 			}
 			try {
 				boolean hasResults = statement.execute(sql);
-				while (!(!hasResults && statement.getUpdateCount() == -1)) {
+				while(!(!hasResults && statement.getUpdateCount() == -1)) {
 					checkWarnings(statement);
 					printResults(statement, hasResults);
 					hasResults = statement.getMoreResults();
 				}
-			} catch (SQLWarning e) {
+			} catch(SQLWarning e) {
 				throw e;
-			} catch (SQLException e) {
-				if (stopOnError) {
+			} catch(SQLException e) {
+				if(stopOnError) {
 					throw e;
 				} else {
 					String message = "Error executing: " + command + ".  Cause: " + e;
@@ -250,57 +250,57 @@ class SQLScriptRunner {
 	}
 
 	private void checkWarnings(Statement statement) throws SQLException {
-		if (!throwWarning) {
+		if(!throwWarning) {
 			return;
 		}
 		// In Oracle, CREATE PROCEDURE, FUNCTION, etc. returns warning
 		// instead of throwing exception if there is compilation error.
 		SQLWarning warning = statement.getWarnings();
-		if (warning != null) {
+		if(warning != null) {
 			throw warning;
 		}
 	}
 
 	private void printResults(Statement statement, boolean hasResults) {
-		if (!hasResults) {
+		if(!hasResults) {
 			return;
 		}
-		try (ResultSet rs = statement.getResultSet()) {
+		try(ResultSet rs = statement.getResultSet()) {
 			ResultSetMetaData md = rs.getMetaData();
 			int cols = md.getColumnCount();
-			for (int i = 0; i < cols; i++) {
+			for(int i = 0; i < cols; i++) {
 				String name = md.getColumnLabel(i + 1);
 				print(name + "\t");
 			}
 			println("");
-			while (rs.next()) {
-				for (int i = 0; i < cols; i++) {
+			while(rs.next()) {
+				for(int i = 0; i < cols; i++) {
 					String value = rs.getString(i + 1);
 					print(value + "\t");
 				}
 				println("");
 			}
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			printlnError("Error printing results: " + e.getMessage());
 		}
 	}
 
 	private void print(Object o) {
-		if (logWriter != null) {
+		if(logWriter != null) {
 			logWriter.print(o);
 			logWriter.flush();
 		}
 	}
 
 	private void println(Object o) {
-		if (logWriter != null) {
+		if(logWriter != null) {
 			logWriter.println(o);
 			logWriter.flush();
 		}
 	}
 
 	private void printlnError(Object o) {
-		if (errorLogWriter != null) {
+		if(errorLogWriter != null) {
 			errorLogWriter.println(o);
 			errorLogWriter.flush();
 		}

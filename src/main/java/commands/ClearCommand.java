@@ -15,7 +15,7 @@ public class ClearCommand implements Command {
 
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent e) {
-		if (args.size() < 1) {
+		if(args.size() < 1) {
 			sendEmbedWithLocalisation(Color.RED, "error", "clear.missingCount", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
 		}
@@ -23,12 +23,12 @@ public class ClearCommand implements Command {
 		int numb;
 		try {
 			numb = Integer.parseInt(args.get(0));
-		} catch (NumberFormatException ex) {
+		} catch(NumberFormatException ex) {
 			sendEmbedWithLocalisation(Color.RED, "error", "clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
 		}
 
-		if (numb > 1 && numb <= 100) {
+		if(numb > 1 && numb <= 100) {
 			List<Message> mgs = new MessageHistory(e.getTextChannel()).retrievePast(numb).complete();
 			e.getTextChannel().deleteMessages(mgs).queue();
 

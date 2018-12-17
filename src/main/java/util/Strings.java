@@ -22,7 +22,7 @@ public class Strings {
 		try {
 			enLocale.load(new InputStreamReader(Strings.class.getResourceAsStream("/strings_en.properties"), Charset.forName("UTF-8")));
 			deLocale.load(new InputStreamReader(Strings.class.getResourceAsStream("/strings_de.properties"), Charset.forName("UTF-8")));
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -80,7 +80,7 @@ public class Strings {
 	@NotNull
 	@Contract(pure = true)
 	public static String parseLang(@NotNull Lang lang) {
-		switch (lang) {
+		switch(lang) {
 			case EN:
 				return "EN";
 			case DE:
@@ -99,7 +99,7 @@ public class Strings {
 	@Nullable
 	@Contract(pure = true)
 	public static Lang parseLang(@NotNull String string) {
-		switch (string) {
+		switch(string) {
 			case "EN":
 				return Lang.EN;
 			case "DE":

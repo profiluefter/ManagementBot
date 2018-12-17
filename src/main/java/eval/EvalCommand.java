@@ -26,18 +26,18 @@ import java.util.regex.Pattern;
 public class EvalCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		synchronized (this) {
+		synchronized(this) {
 			DiscordChannelWriter writer = null;
 			try {
 				String source = event.getMessage().getContentDisplay().replaceFirst(Config.get("prefix") + getName(), "");
 
-				if (!source.startsWith("package eval.environment;"))
+				if(!source.startsWith("package eval.environment;"))
 					source = "package eval.environment;" + source;
 
 				String className;
 				final Pattern pattern = Pattern.compile("class (.+?) \\{", Pattern.DOTALL);
 				final Matcher matcher = pattern.matcher(source);
-				if (matcher.find()) {
+				if(matcher.find()) {
 					className = matcher.group(1);
 				} else {
 					throw new IllegalArgumentException(Strings.getString("eval.detectClassName", event));
@@ -59,7 +59,7 @@ public class EvalCommand implements Command {
 				};
 				boolean success = compiler.getTask(writer, null, null, null, null, fileManager.getJavaFileObjectsFromFiles(Collections.singleton(sourceFile))).call();
 
-				if (success) {
+				if(success) {
 					RestrictingClassLoader classLoader = new RestrictingClassLoader(new URL[]{root.toURI().toURL()});
 					Class<?> cls = Class.forName("eval.environment." + className, true, classLoader);
 
@@ -70,14 +70,14 @@ public class EvalCommand implements Command {
 				} else {
 					throw new IllegalArgumentException(Strings.getString("eval.compileError", event));
 				}
-			} catch (InvocationTargetException e) {
+			} catch(InvocationTargetException e) {
 				JDAUtil.sendMessage(Strings.getString("eval.classNotFound", event) + " " + e.getCause().getCause().getMessage(), event.getTextChannel());
-			} catch (IllegalArgumentException e) {
+			} catch(IllegalArgumentException e) {
 				JDAUtil.sendMessage(e.getMessage(), event.getTextChannel());
-			} catch (Exception e) {
+			} catch(Exception e) {
 				e.printStackTrace();
 			} finally {
-				if (writer != null) {
+				if(writer != null) {
 					writer.sendAll();
 				}
 			}

@@ -16,13 +16,13 @@ import static util.JDAUtil.sendMessage;
 public class MeCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		switch (args.size()) {
+		switch(args.size()) {
 			case 0:
 				printUserInfo(event);
 				return false;
 			case 3:
 				//noinspection SwitchStatementWithTooFewBranches
-				switch (args.get(0)) {
+				switch(args.get(0)) {
 					case "set":
 						return setProperty(args, event);
 					default:
@@ -35,10 +35,10 @@ public class MeCommand implements Command {
 
 	private boolean setProperty(List<String> args, MessageReceivedEvent event) {
 		//noinspection SwitchStatementWithTooFewBranches
-		switch (args.get(1)) {
+		switch(args.get(1)) {
 			case "lang":
 				Strings.Lang lang = Strings.parseLang(args.get(2));
-				if (lang == null) {
+				if(lang == null) {
 					sendEmbed(Color.RED,
 							Strings.getString("me.invalidArgument", event),
 							Strings.getString("me.invalidArgumentDescription", event).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event)),
