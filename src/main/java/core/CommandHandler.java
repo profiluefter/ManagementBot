@@ -14,6 +14,11 @@ import java.util.concurrent.TimeUnit;
 public class CommandHandler {
 	private static Map<String, Command> commands = new HashMap<>();
 
+	/**
+	 * Parses the message and calls the corresponding command.
+	 *
+	 * @param event The event of the message.
+	 */
 	public static void handle(MessageReceivedEvent event) {
 		String rawMessage = event.getMessage().getContentRaw();
 		List<String> split = Arrays.asList(rawMessage.split(" "));
@@ -33,10 +38,18 @@ public class CommandHandler {
 		}
 	}
 
+	/**
+	 * Registers a command.
+	 *
+	 * @param command The command to register.
+	 */
 	static void registerCommand(Command command) {
 		commands.put(command.getName(), command);
 	}
 
+	/**
+	 * @return All commands.
+	 */
 	public static Map<String, Command> getCommands() {
 		return commands;
 	}
