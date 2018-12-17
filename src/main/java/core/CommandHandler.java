@@ -39,7 +39,7 @@ public class CommandHandler {
 	}
 
 	/**
-	 * Registers a command.
+	 * Registers a command. It reads the name from the object and inserts it into the {@link Map}.
 	 *
 	 * @param command The command to register.
 	 */
@@ -48,6 +48,8 @@ public class CommandHandler {
 	}
 
 	/**
+	 * Returns all commands registered so far.
+	 *
 	 * @return All commands.
 	 */
 	public static Map<String, Command> getCommands() {

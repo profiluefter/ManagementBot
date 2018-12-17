@@ -5,7 +5,13 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * ClassLoader used to only allow some specified Classes.
+ */
 class RestrictingClassLoader extends URLClassLoader {
+	/**
+	 * The classes that are allowed when executing custom code.
+	 */
 	private List<String> allowedClasses = Arrays.asList(
 			"eval.environment.IO",
 			"java.lang.Object",
