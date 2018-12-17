@@ -53,10 +53,21 @@ public class User {
 		}
 	}
 
+	/**
+	 * Loads an user from the event object.
+	 *
+	 * @param event The event.
+	 * @return The user.
+	 */
 	public static User loadUser(MessageReceivedEvent event) {
 		return loadUser(event.getAuthor().getIdLong());
 	}
 
+	/**
+	 * Deletes an user from the database.
+	 *
+	 * @param user The user to delete.
+	 */
 	@SuppressWarnings("WeakerAccess") //API method
 	public static void deleteUser(User user) {
 		loadedUsers.remove(user.getDiscordID());
@@ -74,11 +85,21 @@ public class User {
 		return discordID;
 	}
 
+	/**
+	 * Returns all granted permissions of the user.
+	 *
+	 * @return Permissions as a {@link List} of {@link String}s.
+	 */
 	@SuppressWarnings("WeakerAccess") //API method
 	public List<String> getPermissions() {
 		return permissions;
 	}
 
+	/**
+	 * Revokes a permission from the user or does nothing if the user didn't have the permission.
+	 *
+	 * @param permission The permission to remove.
+	 */
 	@SuppressWarnings("WeakerAccess") //API method
 	public void removePermission(String permission) {
 		if (permissions.contains(permission)) {
@@ -92,6 +113,11 @@ public class User {
 
 	}
 
+	/**
+	 * Grants a permission to the user or does nothing if the user already had the permission.
+	 *
+	 * @param permission The permission to add.
+	 */
 	@SuppressWarnings("WeakerAccess") //API method
 	public void addPermission(String permission) {
 		if (!permissions.contains(permission)) {

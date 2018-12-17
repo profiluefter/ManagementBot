@@ -11,6 +11,7 @@ import java.util.List;
 @SuppressWarnings("Duplicates")
 public class Database {
 	private static Connection sql;
+
 	private static PreparedStatement loadUserStatement;
 	private static PreparedStatement loadPermissionsStatement;
 	private static PreparedStatement removePermissionStatement;
