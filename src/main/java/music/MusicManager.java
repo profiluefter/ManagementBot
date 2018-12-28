@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MusicManager {
-	private static Map<Long, AudioPlayerSchedulerBean> players = new HashMap<>();
+	private static Map<Long, TrackScheduler> players = new HashMap<>();
 	private static Map<Long, TextChannel> textChannels = new HashMap<>();
 	private static AudioPlayerManager playerManager;
 
@@ -39,7 +39,7 @@ public class MusicManager {
 		AudioPlayer player = playerManager.createPlayer();
 		TrackScheduler trackScheduler = new TrackScheduler(channel.getGuild().getIdLong(),player);
 		player.addListener(trackScheduler);
-		players.put(channel.getGuild().getIdLong(), new AudioPlayerSchedulerBean(player, trackScheduler));
+		players.put(channel.getGuild().getIdLong(), trackScheduler);
 
 		AudioManager audioManager = channel.getGuild().getAudioManager();
 		audioManager.openAudioConnection(channel);
@@ -47,8 +47,7 @@ public class MusicManager {
 	}
 
 	static void play(long guildID, String searchTerm) {
-		AudioPlayerSchedulerBean audioPlayerSchedulerBean = players.get(guildID);
-		TrackScheduler scheduler = audioPlayerSchedulerBean.scheduler;
+		TrackScheduler scheduler = players.get(guildID);
 		TextChannel textChannel = textChannels.get(guildID);
 
 		playerManager.loadItem(searchTerm, new AudioLoadResultHandler() {
@@ -79,17 +78,7 @@ public class MusicManager {
 	}
 
 	static void skip(long idLong) {
-		players.get(idLong).scheduler.skip();
-	}
-
-	private static class AudioPlayerSchedulerBean {
-		private AudioPlayer audioPlayer;
-		private TrackScheduler scheduler;
-
-		AudioPlayerSchedulerBean(AudioPlayer audioPlayer, TrackScheduler scheduler) {
-			this.audioPlayer = audioPlayer;
-			this.scheduler = scheduler;
-		}
+		players.get(idLong).skip();
 	}
 }
 
