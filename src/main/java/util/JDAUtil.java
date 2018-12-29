@@ -57,6 +57,12 @@ public class JDAUtil {
 		sendMessage(generateEmbed(color, title, description), channel);
 	}
 
+	/*
+	* Note for the future:
+	* List of hardcoded timestamps:
+	* music.InfoPrinter#playlistLoaded()
+	* */
+
 	/**
 	 * Sends a message to the specified channel. This also deletes the message after some time.
 	 *

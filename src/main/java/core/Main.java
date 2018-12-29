@@ -4,10 +4,7 @@ import commands.Command;
 import config.Config;
 import config.Database;
 import eval.EvalCommand;
-import music.JoinCommand;
-import music.MusicManager;
-import music.PlayCommand;
-import music.SkipCommand;
+import music.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -55,6 +52,8 @@ public class Main {
 		CommandHandler.registerCommand(new JoinCommand());
 		CommandHandler.registerCommand(new PlayCommand());
 		CommandHandler.registerCommand(new SkipCommand());
+		CommandHandler.registerCommand(new PauseCommand());
+		CommandHandler.registerCommand(new ResumeCommand());
 
 		Reflections reflections = new Reflections("commands");
 		Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);

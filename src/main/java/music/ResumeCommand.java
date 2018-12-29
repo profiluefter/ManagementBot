@@ -5,17 +5,17 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-public class PlayCommand implements Command {
+public class ResumeCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		MusicManager.interacted(event.getTextChannel(), event.getAuthor().getIdLong());
-		MusicManager.play(String.join(" ", args), event.getGuild().getIdLong(), event.getAuthor().getIdLong());
+		MusicManager.resume(event.getGuild().getIdLong());
 		return false;
 	}
 
 	@Override
 	public String getName() {
-		return "play";
+		return "resume";
 	}
 
 	@Override

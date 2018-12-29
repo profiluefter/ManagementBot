@@ -11,15 +11,14 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
-import util.JDAUtil;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MusicManager {
 	private static Map<Long, TrackScheduler> players = new HashMap<>();
 	private static Map<Long, TextChannel> textChannels = new HashMap<>();
+	private static Map<Long, Long> users = new HashMap<>();
 	private static AudioPlayerManager playerManager;
 
 	public static void init() {
@@ -27,17 +26,22 @@ public class MusicManager {
 		AudioSourceManagers.registerRemoteSources(playerManager);
 	}
 
-	static void usedChannel(TextChannel channel) {
-		textChannels.put(channel.getGuild().getIdLong(),channel);
+	static void interacted(TextChannel channel, long userID) {
+		textChannels.put(channel.getGuild().getIdLong(), channel);
+		users.put(channel.getGuild().getIdLong(), userID);
 	}
 
 	static TextChannel getLastUsedVoiceChannel(long guildID) {
 		return textChannels.get(guildID);
 	}
 
+	static long getLastUserInteracted(long guildID) {
+		return users.get(guildID);
+	}
+
 	static void joinChannel(VoiceChannel channel) {
 		AudioPlayer player = playerManager.createPlayer();
-		TrackScheduler trackScheduler = new TrackScheduler(channel.getGuild().getIdLong(),player);
+		TrackScheduler trackScheduler = new TrackScheduler(channel.getGuild().getIdLong(), player);
 		player.addListener(trackScheduler);
 		players.put(channel.getGuild().getIdLong(), trackScheduler);
 
@@ -46,7 +50,7 @@ public class MusicManager {
 		audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
 	}
 
-	static void play(long guildID, String searchTerm) {
+	static void play(String searchTerm, long guildID, long userID) {
 		TrackScheduler scheduler = players.get(guildID);
 		TextChannel textChannel = textChannels.get(guildID);
 
@@ -54,31 +58,39 @@ public class MusicManager {
 			@Override
 			public void trackLoaded(AudioTrack track) {
 				scheduler.queue(track);
-				JDAUtil.sendEmbed(Color.GREEN, "Success!", "Playing " + track.getIdentifier(), textChannel);
+				InfoPrinter.trackLoaded(track, textChannel, userID);
 			}
 
 			@Override
 			public void playlistLoaded(AudioPlaylist playlist) {
-				JDAUtil.sendEmbed(Color.ORANGE, "Playlist loaded", "Playlist loaded: " + playlist.getName(), textChannel);
 				for(AudioTrack track : playlist.getTracks()) {
 					scheduler.queue(track);
 				}
+				InfoPrinter.playlistLoaded(playlist, textChannel, userID);
 			}
 
 			@Override
 			public void noMatches() {
-				JDAUtil.sendEmbed(Color.RED, "No matches!", "Nothing found!", textChannel);
+				InfoPrinter.noMatches(textChannel, userID);
 			}
 
 			@Override
 			public void loadFailed(FriendlyException exception) {
-				JDAUtil.sendEmbed(Color.RED, "Failed loading!", exception.getMessage(), textChannel);
+				InfoPrinter.loadFailed(exception, textChannel, userID);
 			}
 		});
 	}
 
-	static void skip(long idLong) {
-		players.get(idLong).skip();
+	static void skip(long guildID) {
+		players.get(guildID).skip();
+	}
+
+	static void pause(long guildID) {
+		players.get(guildID).pause();
+	}
+
+	static void resume(long guildID) {
+		players.get(guildID).resume();
 	}
 }
 

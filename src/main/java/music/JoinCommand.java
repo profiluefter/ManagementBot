@@ -8,7 +8,7 @@ import java.util.List;
 public class JoinCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		MusicManager.usedChannel(event.getTextChannel());
+		MusicManager.interacted(event.getTextChannel(), event.getAuthor().getIdLong());
 		MusicManager.joinChannel(event.getMember().getVoiceState().getChannel());
 		return false;
 	}

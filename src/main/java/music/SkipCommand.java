@@ -8,7 +8,7 @@ import java.util.List;
 public class SkipCommand implements Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		MusicManager.usedChannel(event.getTextChannel());
+		MusicManager.interacted(event.getTextChannel(), event.getAuthor().getIdLong());
 		MusicManager.skip(event.getGuild().getIdLong());
 		return false;
 	}

@@ -8,13 +8,13 @@ import org.junit.Test;
 public class ConfigTest {
 
 	@BeforeClass
-	public static void setUp() throws Exception {
+	public static void setUp() {
 		Config.init();
 		Config.set("testKey", "testValue");
 	}
 
 	@AfterClass
-	public static void tearDown() throws Exception {
+	public static void tearDown() {
 		Config.remove("testKey");
 		Config.remove("anotherTestKey");
 		Config.remove("lastTestKey");
