@@ -16,7 +16,7 @@ public class ResumeCommand implements Command {
 
 	@Override
 	public String[] getName() {
-		return new String[]{"resume","unpause"};
+		return new String[]{"resume", "unpause"};
 	}
 
 	@Override

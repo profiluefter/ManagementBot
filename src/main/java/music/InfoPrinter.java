@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static util.Strings.getString;
 
-class InfoPrinter {
+public class InfoPrinter {
 	@NotNull
 	private static String calculateDuration(long millis, long userID) {
 		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
@@ -23,12 +23,12 @@ class InfoPrinter {
 	}
 
 	//------------------------------------------Track-Loader------------------------------------------------------------
-	static void trackLoaded(AudioTrack track, TextChannel textChannel, long userID) {
+	public static void trackLoaded(AudioTrack track, TextChannel textChannel, long userID, boolean event) {
 		String time = calculateDuration(track.getDuration(), userID);
 
 		JDAUtil.sendMessage(new EmbedBuilder()
 				.setColor(Color.GREEN)
-				.setTitle(getString("music.trackLoaded", userID))
+				.setTitle(getString(event ? "music.trackLoaded" : "music.playing", userID))
 				.addField(getString("music.title", userID), track.getInfo().title, true)
 				.addField(getString("music.artist", userID), track.getInfo().author, true)
 				.addField(getString("music.duration", userID), time, true)
@@ -46,13 +46,13 @@ class InfoPrinter {
 		);
 
 		try {
-			textChannel.sendMessage(builder.build()).complete().delete().queueAfter(1,TimeUnit.MINUTES);
+			textChannel.sendMessage(builder.build()).complete().delete().queueAfter(1, TimeUnit.MINUTES);
 		} catch(IllegalArgumentException e) { //Embed to long
 			textChannel.sendMessage(new EmbedBuilder()
 					.setColor(Color.GREEN)
 					.setTitle(getString("music.playlistLoaded", userID))
 					.setDescription(getString("music.title", userID) + ": " + playlist.getName())
-					.build()).complete().delete().queueAfter(1,TimeUnit.MINUTES);
+					.build()).complete().delete().queueAfter(1, TimeUnit.MINUTES);
 		}
 	}
 
@@ -102,15 +102,7 @@ class InfoPrinter {
 	}
 
 	static void trackStartEvent(TrackStartEvent event, TextChannel textChannel, long userID) {
-		String time = calculateDuration(event.track.getDuration(), userID);
-
-		JDAUtil.sendMessage(new EmbedBuilder()
-				.setColor(Color.GREEN)
-				.setTitle(getString("music.playing", userID))
-				.addField(getString("music.title", userID), event.track.getInfo().title, true)
-				.addField(getString("music.artist", userID), event.track.getInfo().author, true)
-				.addField(getString("music.duration", userID), time, true)
-				.build(), textChannel);
+		//Ignored
 	}
 
 	static void trackStuckEvent(TrackStuckEvent event, TextChannel textChannel, long userID) {

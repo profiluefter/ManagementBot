@@ -58,7 +58,7 @@ public class MusicManager {
 			@Override
 			public void trackLoaded(AudioTrack track) {
 				scheduler.queue(track);
-				InfoPrinter.trackLoaded(track, textChannel, userID);
+				InfoPrinter.trackLoaded(track, textChannel, userID, true);
 			}
 
 			@Override
@@ -91,6 +91,10 @@ public class MusicManager {
 
 	public static void resume(long guildID) {
 		players.get(guildID).resume();
+	}
+
+	public static AudioTrack getPlayingTrack(long guildID) {
+		return players.get(guildID).getPlayingTrack();
 	}
 }
 

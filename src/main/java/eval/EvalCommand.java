@@ -42,6 +42,8 @@ public class EvalCommand implements Command {
 					throw new IllegalArgumentException(Strings.getString("eval.detectClassName", event));
 				}
 
+				className = className.trim();
+
 				File root = Files.createTempDirectory("managementBot").toFile();
 				File sourceFile = new File(root, "eval/environment/" + className + ".java");
 				//noinspection ResultOfMethodCallIgnored
@@ -53,7 +55,16 @@ public class EvalCommand implements Command {
 				writer = new DiscordChannelWriter(event.getTextChannel()) {
 					@Override
 					public void sendAll() {
-						buffer.forEach((channel, strings) -> JDAUtil.sendMessage(new MessageBuilder().appendCodeBlock(String.join("", strings).replaceAll(Pattern.quote(root.toString()), ""), "").build(), channel));
+						buffer.forEach((channel, strings) -> {
+							try {
+								JDAUtil.sendMessage(new MessageBuilder().appendCodeBlock(String.join("", strings).replaceAll(Pattern.quote(root.toString()), ""), "").build(), channel);
+							} catch(IllegalStateException e) {
+								if(e.getMessage().equals("Cannot build a Message with more than 2000 characters. Please limit your input.")) {
+									JDAUtil.sendMessage("Message too long!", channel);
+								}
+							}
+						});
+						buffer.clear();
 					}
 				};
 				boolean success = compiler.getTask(writer, null, null, null, null, fileManager.getJavaFileObjectsFromFiles(Collections.singleton(sourceFile))).call();
@@ -86,7 +97,7 @@ public class EvalCommand implements Command {
 
 	@Override
 	public String[] getName() {
-		return new String[]{"eval","execute","run"};
+		return new String[]{"eval", "execute", "run"};
 	}
 
 	@Override

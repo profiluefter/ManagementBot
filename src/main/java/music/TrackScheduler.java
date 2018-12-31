@@ -55,4 +55,8 @@ class TrackScheduler implements AudioEventListener {
 	void resume() {
 		player.setPaused(false);
 	}
+
+	AudioTrack getPlayingTrack() {
+		return player.getPlayingTrack();
+	}
 }

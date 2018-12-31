@@ -31,7 +31,7 @@ public class HelpCommand implements Command {
 
 	@Override
 	public String[] getName() {
-		return new String[]{"help","commands"};
+		return new String[]{"help", "commands"};
 	}
 
 	@Override

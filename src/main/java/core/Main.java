@@ -4,8 +4,7 @@ import commands.Command;
 import config.Config;
 import config.Database;
 import eval.EvalCommand;
-import music.*;
-import music.commands.*;
+import music.MusicManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -50,20 +49,17 @@ public class Main {
 	private static void addCommands() {
 		CommandHandler.registerCommand(new EvalCommand());
 
-		CommandHandler.registerCommand(new JoinCommand());
-		CommandHandler.registerCommand(new PlayCommand());
-		CommandHandler.registerCommand(new SkipCommand());
-		CommandHandler.registerCommand(new PauseCommand());
-		CommandHandler.registerCommand(new ResumeCommand());
-
-		Reflections reflections = new Reflections("commands");
-		Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
-		for(Class<? extends Command> command : commands) {
-			try {
-				Command instance = command.getConstructor().newInstance();
-				CommandHandler.registerCommand(instance);
-			} catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-				throw new RuntimeException(e);
+		String[] commandPackages = new String[]{"commands", "music.commands"};
+		for(String commandPackage : commandPackages) {
+			Reflections reflections = new Reflections(commandPackage);
+			Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
+			for(Class<? extends Command> command : commands) {
+				try {
+					Command instance = command.getConstructor().newInstance();
+					CommandHandler.registerCommand(instance);
+				} catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}

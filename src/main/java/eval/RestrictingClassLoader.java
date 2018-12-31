@@ -15,7 +15,8 @@ class RestrictingClassLoader extends URLClassLoader {
 	private List<String> allowedClasses = Arrays.asList(
 			"eval.environment.IO",
 			"java.lang.Object",
-			"java.lang.String"
+			"java.lang.String",
+			"java.lang.invoke.StringConcatFactory"
 	);
 
 	RestrictingClassLoader(URL[] urls) {
