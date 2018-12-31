@@ -1,7 +1,6 @@
 package eval;
 
 import commands.Command;
-import config.Config;
 import eval.environment.IO;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -29,7 +28,7 @@ public class EvalCommand implements Command {
 		synchronized(this) {
 			DiscordChannelWriter writer = null;
 			try {
-				String source = event.getMessage().getContentDisplay().replaceFirst(Config.get("prefix") + getName(), "");
+				String source = String.join(" ", args);
 
 				if(!source.startsWith("package eval.environment;"))
 					source = "package eval.environment;" + source;
@@ -86,8 +85,8 @@ public class EvalCommand implements Command {
 	}
 
 	@Override
-	public String getName() {
-		return "eval";
+	public String[] getName() {
+		return new String[]{"eval","execute","run"};
 	}
 
 	@Override

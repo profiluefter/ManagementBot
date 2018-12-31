@@ -14,8 +14,8 @@ public class PingCommand implements Command {
 	}
 
 	@Override
-	public String getName() {
-		return "ping";
+	public String[] getName() {
+		return new String[]{"ping"};
 	}
 
 	public String getHelp(MessageReceivedEvent event) {

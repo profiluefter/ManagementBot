@@ -68,8 +68,8 @@ public class MeCommand implements Command {
 	}
 
 	@Override
-	public String getName() {
-		return "me";
+	public String[] getName() {
+		return new String[]{"me"};
 	}
 
 	@Override

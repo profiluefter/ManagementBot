@@ -5,6 +5,7 @@ import config.Config;
 import config.Database;
 import eval.EvalCommand;
 import music.*;
+import music.commands.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;

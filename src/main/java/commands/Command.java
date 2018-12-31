@@ -13,9 +13,9 @@ public interface Command {
 	boolean execute(List<String> args, MessageReceivedEvent event);
 
 	/**
-	 * @return The name of the Command as it would be called
+	 * @return An array of the name and alternatives that also trigger the command. The first one is displayed in the help command.
 	 */
-	String getName();
+	String[] getName();
 
 	/**
 	 * @param event The event that was fired when receiving the message

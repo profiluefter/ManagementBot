@@ -33,9 +33,8 @@ public class CommandHandler {
 		Command command = commands.getOrDefault(invoke, commands.get("help"));
 		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
 		boolean printHelp = command.execute(args, event);
-		if(printHelp) {
+		if(printHelp)
 			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event), command.getHelp(event), event.getTextChannel());
-		}
 	}
 
 	/**
@@ -44,7 +43,10 @@ public class CommandHandler {
 	 * @param command The command to register.
 	 */
 	static void registerCommand(Command command) {
-		commands.put(command.getName(), command);
+		String[] names = command.getName();
+		for(String name : names) {
+			commands.put(name, command);
+		}
 	}
 
 	/**

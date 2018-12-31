@@ -40,8 +40,8 @@ public class ClearCommand implements Command {
 	}
 
 	@Override
-	public String getName() {
-		return "clear";
+	public String[] getName() {
+		return new String[]{"clear", "delete"};
 	}
 
 	public String getHelp(MessageReceivedEvent event) {

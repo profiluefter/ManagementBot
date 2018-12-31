@@ -26,7 +26,7 @@ public class MusicManager {
 		AudioSourceManagers.registerRemoteSources(playerManager);
 	}
 
-	static void interacted(TextChannel channel, long userID) {
+	public static void interacted(TextChannel channel, long userID) {
 		textChannels.put(channel.getGuild().getIdLong(), channel);
 		users.put(channel.getGuild().getIdLong(), userID);
 	}
@@ -39,7 +39,7 @@ public class MusicManager {
 		return users.get(guildID);
 	}
 
-	static void joinChannel(VoiceChannel channel) {
+	public static void joinChannel(VoiceChannel channel) {
 		AudioPlayer player = playerManager.createPlayer();
 		TrackScheduler trackScheduler = new TrackScheduler(channel.getGuild().getIdLong(), player);
 		player.addListener(trackScheduler);
@@ -50,7 +50,7 @@ public class MusicManager {
 		audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
 	}
 
-	static void play(String searchTerm, long guildID, long userID) {
+	public static void play(String searchTerm, long guildID, long userID) {
 		TrackScheduler scheduler = players.get(guildID);
 		TextChannel textChannel = textChannels.get(guildID);
 
@@ -81,15 +81,15 @@ public class MusicManager {
 		});
 	}
 
-	static void skip(long guildID) {
+	public static void skip(long guildID) {
 		players.get(guildID).skip();
 	}
 
-	static void pause(long guildID) {
+	public static void pause(long guildID) {
 		players.get(guildID).pause();
 	}
 
-	static void resume(long guildID) {
+	public static void resume(long guildID) {
 		players.get(guildID).resume();
 	}
 }

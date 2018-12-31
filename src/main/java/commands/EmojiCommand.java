@@ -78,8 +78,8 @@ public class EmojiCommand implements Command {
 	}
 
 	@Override
-	public String getName() {
-		return "emoji";
+	public String[] getName() {
+		return new String[]{"emoji", "addemoji"};
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class HelpCommand implements Command {
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		List<MessageEmbed.Field> fields = new ArrayList<>();
 		for(Command command : CommandHandler.getCommands().values()) { //TODO: Order
-			fields.add(new MessageEmbed.Field(command.getName(),
+			fields.add(new MessageEmbed.Field(command.getName()[0],
 					command.getHelp(event) == null ?
 							Strings.getString("help.notAvailable", event) :
 							command.getHelp(event), false));
@@ -30,8 +30,8 @@ public class HelpCommand implements Command {
 	}
 
 	@Override
-	public String getName() {
-		return "help";
+	public String[] getName() {
+		return new String[]{"help","commands"};
 	}
 
 	@Override
