@@ -1,9 +1,9 @@
 [//]: # (TODO: Order)
-#Management Bot
+# Management Bot
 
-##Features
+## Features
 
-###Core
+### Core
 - Delete a specified amount of messages
 - Add a custom emoji based on an url
 - Localization in english and german
@@ -11,18 +11,18 @@
 - Customize the prefix
 - Execute generic Java code
 
-###Music
+### Music
 - Display the current playing song
 - Pause and resume the player
 - Queue songs
 - Skip songs
 
-###Work in Progress
+### Work in Progress
 - Permission system
 
-##Commands
+## Commands
 
-###Core
+### Core
 All commands are prefixed with the prefix of the config file. Standard: -
 - `clear <amount>`
   - Deletes the specified amount of messages
@@ -36,7 +36,7 @@ All commands are prefixed with the prefix of the config file. Standard: -
   - Displays the current ping of the bot
 - `eval <source code>`
 
-###Music
+### Music
   - Compiles the given source code and executes it. Has to be a valid Java class. The [IO class](src/main/java/eval/environment/IO.java) can be used for IO purposes.
 - `join`
   - Joins the bot to the current voice channel. Has to be executed before any other music related command. In the future this command shouldn't be needed.
