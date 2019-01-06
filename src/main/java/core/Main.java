@@ -14,6 +14,7 @@ import javax.security.auth.login.LoginException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
+@SuppressWarnings({"WeakerAccess", "RedundantSuppression"})
 public class Main {
 
 	public static void main(String[] args) {

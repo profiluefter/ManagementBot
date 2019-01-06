@@ -73,7 +73,7 @@ public class InfoPrinter {
 	}
 
 	//----------------------------------------Player-Events-------------------------------------------------------------
-	static void playerPauseEvent(PlayerPauseEvent event, TextChannel textChannel, long userID) {
+	static void playerPauseEvent(TextChannel textChannel, long userID) {
 		JDAUtil.sendMessage(new EmbedBuilder()
 				.setColor(Color.BLUE)
 				.setTitle(getString("music.pausedTitle", userID))
@@ -81,7 +81,7 @@ public class InfoPrinter {
 				.build(), textChannel);
 	}
 
-	static void playerResumeEvent(PlayerResumeEvent event, TextChannel textChannel, long userID) {
+	static void playerResumeEvent(TextChannel textChannel, long userID) {
 		JDAUtil.sendMessage(new EmbedBuilder()
 				.setColor(Color.BLUE)
 				.setTitle(getString("music.resumedTitle", userID))
@@ -89,7 +89,8 @@ public class InfoPrinter {
 				.build(), textChannel);
 	}
 
-	static void trackEndEvent(TrackEndEvent event, TextChannel textChannel, long userID) {
+	@SuppressWarnings("EmptyMethod")
+	static void trackEndEvent() {
 		//Ignored
 	}
 
@@ -101,11 +102,12 @@ public class InfoPrinter {
 				.build(), textChannel);
 	}
 
-	static void trackStartEvent(TrackStartEvent event, TextChannel textChannel, long userID) {
+	@SuppressWarnings("EmptyMethod")
+	static void trackStartEvent() {
 		//Ignored
 	}
 
-	static void trackStuckEvent(TrackStuckEvent event, TextChannel textChannel, long userID) {
+	static void trackStuckEvent(TextChannel textChannel, long userID) {
 		JDAUtil.sendMessage(new EmbedBuilder()
 				.setColor(Color.RED)
 				.setTitle(getString("music.trackStuckTitle", userID))

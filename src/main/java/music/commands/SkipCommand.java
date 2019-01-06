@@ -8,8 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 @CommandDescription(
-		name = {"skip", "next"},
-		help = "help.notAvailable"
+		name = {"skip", "next"}
 )
 public class SkipCommand extends Command {
 	@Override

@@ -8,8 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 @CommandDescription(
-		name = {"pause"},
-		help = "help.notAvailable"
+		name = {"pause"}
 )
 public class PauseCommand extends Command {
 	@Override

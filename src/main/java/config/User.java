@@ -10,12 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("WeakerAccess")
 public class User {
-	private static Map<Long, User> loadedUsers = new HashMap<>();
+	private static final Map<Long, User> loadedUsers = new HashMap<>();
 
-	private long discordID;
+	private final long discordID;
 	private Strings.Lang language;
-	private List<String> permissions;
+	private final List<String> permissions;
 
 	private User(long discordID, Strings.Lang language, List<String> permissions) {
 		this.discordID = discordID;

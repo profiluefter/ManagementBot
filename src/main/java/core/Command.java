@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 public abstract class Command {
-	private CommandDescription description;
+	private final CommandDescription description;
 
 	/**
 	 * @param args  The arguments provided when called

@@ -8,8 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 @CommandDescription(
-		name = "join",
-		help = "help.notAvailable"
+		name = "join"
 )
 public class JoinCommand extends Command {
 	@Override

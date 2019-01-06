@@ -12,7 +12,7 @@ class RestrictingClassLoader extends URLClassLoader {
 	/**
 	 * The classes that are allowed when executing custom code.
 	 */
-	private List<String> allowedClasses = Arrays.asList(
+	private static final List<String> allowedClasses = Arrays.asList(
 			"eval.environment.IO",
 			"java.lang.Object",
 			"java.lang.String",

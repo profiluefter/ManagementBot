@@ -5,6 +5,7 @@ import core.CommandHandler;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+@SuppressWarnings("unused")
 public class CommandListener extends ListenerAdapter {
 	public void onMessageReceived(MessageReceivedEvent e) {
 		//Test if the message starts with the prefix of the bot or if the author of the message is a bot

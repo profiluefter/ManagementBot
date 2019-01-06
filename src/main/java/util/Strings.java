@@ -12,8 +12,8 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class Strings {
-	private static Properties enLocale = new Properties();
-	private static Properties deLocale = new Properties();
+	private static final Properties enLocale = new Properties();
+	private static final Properties deLocale = new Properties();
 
 	/**
 	 * Loads the strings from the files

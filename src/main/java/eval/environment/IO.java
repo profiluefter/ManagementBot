@@ -9,9 +9,10 @@ import java.io.PrintWriter;
  * Used to interact with the user of the code-snippet.
  */
 //TODO: reader methods
+@SuppressWarnings("unused") //Used for eval
 public class IO {
 	private static TextChannel textChannel;
-	private PrintWriter writer;
+	private final PrintWriter writer;
 
 	/**
 	 * Constructs an new instance of the object and copies the active discord channel.

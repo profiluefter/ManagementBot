@@ -12,6 +12,7 @@ import java.util.List;
 
 import static util.JDAUtil.sendEmbedWithLocalisation;
 
+@SuppressWarnings("unused")
 @CommandDescription(
 		name = {"clear", "delete"},
 		help = "clear.help"

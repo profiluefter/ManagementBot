@@ -4,5 +4,4 @@ ManagementBot.iml
 target/
 db.sqlite
 config.properties
-db.sqlite-journal
 /classes/

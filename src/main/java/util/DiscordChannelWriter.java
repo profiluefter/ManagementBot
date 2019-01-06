@@ -14,8 +14,8 @@ import java.util.Map;
  * An implementation of a {@link Writer} that writes into a specified {@link TextChannel}
  */
 public class DiscordChannelWriter extends Writer implements AutoCloseable {
-	protected static Map<TextChannel, List<String>> buffer = new HashMap<>();
-	private TextChannel textChannel;
+	protected static final Map<TextChannel, List<String>> buffer = new HashMap<>();
+	private final TextChannel textChannel;
 
 	/**
 	 * Constructs an {@link DiscordChannelWriter} object.

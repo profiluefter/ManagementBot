@@ -8,8 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 @CommandDescription(
-		name = {"play"},
-		help = "help.notAvailable"
+		name = {"play"}
 )
 public class PlayCommand extends Command {
 	@Override

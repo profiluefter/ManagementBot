@@ -24,8 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @CommandDescription(
-		name = {"eval", "execute", "run"},
-		help = "help.notAvailable"
+		name = {"eval", "execute", "run"}
 )
 public class EvalCommand extends Command {
 	@Override

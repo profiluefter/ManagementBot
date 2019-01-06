@@ -1,8 +1,9 @@
 package util;
 
+@SuppressWarnings({"unused", "WeakerAccess"}) //Used in permission command
 public class Touple<A, B> {
-	public A a;
-	public B b;
+	public final A a;
+	public final B b;
 
 	public Touple(A a, B b) {
 		this.a = a;

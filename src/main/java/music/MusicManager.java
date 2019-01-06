@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MusicManager {
-	private static Map<Long, TrackScheduler> players = new HashMap<>();
-	private static Map<Long, TextChannel> textChannels = new HashMap<>();
-	private static Map<Long, Long> users = new HashMap<>();
+	private static final Map<Long, TrackScheduler> players = new HashMap<>();
+	private static final Map<Long, TextChannel> textChannels = new HashMap<>();
+	private static final Map<Long, Long> users = new HashMap<>();
 	private static AudioPlayerManager playerManager;
 
 	public static void init() {

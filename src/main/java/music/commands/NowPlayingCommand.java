@@ -9,8 +9,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 @CommandDescription(
-		name = {"nowplaying", "np", "song"},
-		help = "help.notAvailable"
+		name = {"nowplaying", "np", "song"}
 )
 public class NowPlayingCommand extends Command {
 	@Override

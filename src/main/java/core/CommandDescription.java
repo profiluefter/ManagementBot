@@ -8,6 +8,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandDescription {
+	/**
+	 * @return An array of names that trigger the command.
+	 */
 	String[] name();
-	String help();
+
+	/**
+	 * @return The key of the description in the strings file.
+	 */
+	String help() default "help.notAvailable";
 }

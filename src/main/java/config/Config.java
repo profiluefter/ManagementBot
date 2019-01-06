@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class Config {
 	private static Properties properties;
-	private static File configFile = new File("config.properties");
+	private static final File configFile = new File("config.properties");
 
 	/**
 	 * Loads the default configuration from the default-config file an copies it to the real configuration file.

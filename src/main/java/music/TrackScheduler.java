@@ -9,9 +9,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 class TrackScheduler implements AudioEventListener {
-	private Queue<AudioTrack> queue = new LinkedList<>();
-	private long guildID;
-	private AudioPlayer player;
+	private final Queue<AudioTrack> queue = new LinkedList<>();
+	private final long guildID;
+	private final AudioPlayer player;
 
 	TrackScheduler(long guildID, AudioPlayer player) {
 		this.guildID = guildID;
@@ -23,19 +23,19 @@ class TrackScheduler implements AudioEventListener {
 		TextChannel textChannel = MusicManager.getLastUsedVoiceChannel(guildID);
 		long userID = MusicManager.getLastUserInteracted(guildID);
 		if(event instanceof PlayerPauseEvent) {
-			InfoPrinter.playerPauseEvent(((PlayerPauseEvent) event), textChannel, userID);
+			InfoPrinter.playerPauseEvent(textChannel, userID);
 		} else if(event instanceof PlayerResumeEvent) {
-			InfoPrinter.playerResumeEvent(((PlayerResumeEvent) event), textChannel, userID);
+			InfoPrinter.playerResumeEvent(textChannel, userID);
 		} else if(event instanceof TrackEndEvent) {
 			event.player.playTrack(queue.poll());
-			InfoPrinter.trackEndEvent(((TrackEndEvent) event), textChannel, userID);
+			InfoPrinter.trackEndEvent();
 		} else if(event instanceof TrackExceptionEvent) {
 			event.player.playTrack(queue.poll());
 			InfoPrinter.trackExceptionEvent(((TrackExceptionEvent) event), textChannel, userID);
 		} else if(event instanceof TrackStartEvent) {
-			InfoPrinter.trackStartEvent(((TrackStartEvent) event), textChannel, userID);
+			InfoPrinter.trackStartEvent();
 		} else if(event instanceof TrackStuckEvent) {
-			InfoPrinter.trackStuckEvent(((TrackStuckEvent) event), textChannel, userID);
+			InfoPrinter.trackStuckEvent(textChannel, userID);
 		}
 	}
 

@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class CommandHandler {
-	private static Map<String, Command> commands = new HashMap<>();
+	private static final Map<String, Command> commands = new HashMap<>();
 
 	/**
 	 * Parses the message and calls the corresponding command.
