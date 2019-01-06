@@ -1,26 +1,21 @@
 package music.commands;
 
-import commands.Command;
+import core.Command;
+import core.CommandDescription;
 import music.MusicManager;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-public class PauseCommand implements Command {
+@CommandDescription(
+		name = {"pause"},
+		help = "help.notAvailable"
+)
+public class PauseCommand extends Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		MusicManager.interacted(event.getTextChannel(), event.getAuthor().getIdLong());
 		MusicManager.pause(event.getGuild().getIdLong());
 		return false;
-	}
-
-	@Override
-	public String[] getName() {
-		return new String[]{"pause"};
-	}
-
-	@Override
-	public String getHelp(MessageReceivedEvent event) {
-		return null;
 	}
 }

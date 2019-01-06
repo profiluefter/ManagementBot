@@ -1,10 +1,11 @@
 package commands;
 
 import config.User;
+import core.Command;
+import core.CommandDescription;
 import net.dv8tion.jda.core.entities.Icon;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import util.Strings;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,7 +20,11 @@ import java.util.List;
 import static util.JDAUtil.sendEmbedWithLocalisation;
 
 //TODO: Clean this mess up
-public class EmojiCommand implements Command {
+@CommandDescription(
+		name = {"emoji", "addemoji"},
+		help = "emoji.help"
+)
+public class EmojiCommand extends Command {
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		if(event.getMessage().getAttachments().size() == 0 && args.size() == 2) {
 			try {
@@ -75,15 +80,5 @@ public class EmojiCommand implements Command {
 		byte[] imageInByte = stream.toByteArray();
 		stream.close();
 		return imageInByte;
-	}
-
-	@Override
-	public String[] getName() {
-		return new String[]{"emoji", "addemoji"};
-	}
-
-	@Override
-	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("emoji.help", event);
 	}
 }

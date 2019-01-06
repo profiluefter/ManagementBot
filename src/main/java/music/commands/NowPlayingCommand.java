@@ -1,27 +1,22 @@
 package music.commands;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import commands.Command;
+import core.Command;
+import core.CommandDescription;
 import music.MusicManager;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-public class NowPlayingCommand implements Command {
+@CommandDescription(
+		name = {"nowplaying", "np", "song"},
+		help = "help.notAvailable"
+)
+public class NowPlayingCommand extends Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		AudioTrack playingTrack = MusicManager.getPlayingTrack(event.getGuild().getIdLong());
 		music.InfoPrinter.trackLoaded(playingTrack, event.getTextChannel(), event.getAuthor().getIdLong(), false);
 		return false;
-	}
-
-	@Override
-	public String[] getName() {
-		return new String[]{"nowplaying", "np", "song"};
-	}
-
-	@Override
-	public String getHelp(MessageReceivedEvent event) {
-		return null;
 	}
 }

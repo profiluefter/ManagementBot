@@ -1,6 +1,5 @@
 package core;
 
-import commands.Command;
 import config.Config;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.JDAUtil;
@@ -35,7 +34,7 @@ public class CommandHandler {
 		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
 		boolean printHelp = command.execute(args, event);
 		if(printHelp)
-			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event), command.getHelp(event), event.getTextChannel());
+			JDAUtil.sendEmbed(Color.RED, Strings.getString("syntaxError", event), Strings.getString(command.getDescription().help(), event), event.getTextChannel());
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class CommandHandler {
 	 * @param command The command to register.
 	 */
 	static void registerCommand(Command command) {
-		String[] names = command.getName();
+		String[] names = command.getDescription().name();
 		for(String name : names) {
 			commands.put(name, command);
 		}

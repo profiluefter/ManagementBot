@@ -1,6 +1,7 @@
 package eval;
 
-import commands.Command;
+import core.Command;
+import core.CommandDescription;
 import eval.environment.IO;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -22,7 +23,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EvalCommand implements Command {
+@CommandDescription(
+		name = {"eval", "execute", "run"},
+		help = "help.notAvailable"
+)
+public class EvalCommand extends Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		synchronized(this) {
@@ -93,15 +98,5 @@ public class EvalCommand implements Command {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public String[] getName() {
-		return new String[]{"eval", "execute", "run"};
-	}
-
-	@Override
-	public String getHelp(MessageReceivedEvent event) {
-		return null;
 	}
 }

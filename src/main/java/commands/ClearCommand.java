@@ -1,17 +1,22 @@
 package commands;
 
 import config.User;
+import core.Command;
+import core.CommandDescription;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import util.Strings;
 
 import java.awt.*;
 import java.util.List;
 
 import static util.JDAUtil.sendEmbedWithLocalisation;
 
-public class ClearCommand implements Command {
+@CommandDescription(
+		name = {"clear", "delete"},
+		help = "clear.help"
+)
+public class ClearCommand extends Command {
 
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent e) {
@@ -37,14 +42,5 @@ public class ClearCommand implements Command {
 			sendEmbedWithLocalisation(Color.RED, "error", "clear.countOutOfRange", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 		}
 		return false;
-	}
-
-	@Override
-	public String[] getName() {
-		return new String[]{"clear", "delete"};
-	}
-
-	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("clear.help", event);
 	}
 }

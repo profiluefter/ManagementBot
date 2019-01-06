@@ -1,6 +1,8 @@
 package commands;
 
 import config.User;
+import core.Command;
+import core.CommandDescription;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -13,7 +15,11 @@ import java.util.stream.Collectors;
 import static util.JDAUtil.sendEmbed;
 import static util.JDAUtil.sendMessage;
 
-public class MeCommand implements Command {
+@CommandDescription(
+		name = "me",
+		help = "me.help"
+)
+public class MeCommand extends Command {
 	@Override
 	public boolean execute(List<String> args, MessageReceivedEvent event) {
 		switch(args.size()) {
@@ -65,15 +71,5 @@ public class MeCommand implements Command {
 				.addField(Strings.getString("me.language", event), Strings.parseLang(user.getLanguage()), false)
 				.addField(Strings.getString("me.roles", event), event.getMember().getRoles().stream().map(Role::getName).collect(Collectors.joining(", ")), false);
 		sendMessage(builder.build(), event.getTextChannel());
-	}
-
-	@Override
-	public String[] getName() {
-		return new String[]{"me"};
-	}
-
-	@Override
-	public String getHelp(MessageReceivedEvent event) {
-		return Strings.getString("me.help", event);
 	}
 }

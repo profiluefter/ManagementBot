@@ -1,6 +1,5 @@
 package core;
 
-import commands.Command;
 import config.Config;
 import config.Database;
 import eval.EvalCommand;
@@ -52,8 +51,7 @@ public class Main {
 		String[] commandPackages = new String[]{"commands", "music.commands"};
 		for(String commandPackage : commandPackages) {
 			Reflections reflections = new Reflections(commandPackage);
-			Set<Class<? extends Command>> commands = reflections.getSubTypesOf(Command.class);
-			for(Class<? extends Command> command : commands) {
+			for(Class<? extends Command> command : reflections.getSubTypesOf(Command.class)) {
 				try {
 					Command instance = command.getConstructor().newInstance();
 					CommandHandler.registerCommand(instance);

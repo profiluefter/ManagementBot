@@ -1,3 +1,4 @@
+/* TODO
 package commands;
 
 import config.User;
@@ -123,3 +124,4 @@ public class PermissionCommand implements Command {
 		return null;
 	}
 }
+*/
