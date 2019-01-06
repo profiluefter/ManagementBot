@@ -29,6 +29,7 @@ public class CommandHandler {
 			args = split.subList(1, split.size());
 		else
 			args = new ArrayList<>();
+		args = new ArrayList<>(args);
 
 		Command command = commands.getOrDefault(invoke, commands.get("help"));
 		event.getMessage().delete().queueAfter(1, TimeUnit.MINUTES);
