@@ -1,18 +1,14 @@
 package core;
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-
-import java.util.List;
-
 public abstract class Command {
 	private final CommandDescription description;
 
 	/**
-	 * @param args  The arguments provided when called
-	 * @param event The event of the message
+	 *
+	 * @param context An object containing all important information
 	 * @return If the help should be printed. False if not.
 	 */
-	public abstract boolean execute(List<String> args, MessageReceivedEvent event);
+	public abstract boolean execute(Context context);
 
 	public CommandDescription getDescription() {
 		return description;

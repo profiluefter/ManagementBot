@@ -2,9 +2,9 @@ package eval;
 
 import core.Command;
 import core.CommandDescription;
+import core.Context;
 import eval.environment.IO;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.DiscordChannelWriter;
 import util.JDAUtil;
 import util.Strings;
@@ -19,7 +19,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,11 +27,11 @@ import java.util.regex.Pattern;
 )
 public class EvalCommand extends Command {
 	@Override
-	public boolean execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(Context context) {
 		synchronized(this) {
 			DiscordChannelWriter writer = null;
 			try {
-				String source = String.join(" ", args);
+				String source = context.getArgsRaw();
 
 				if(!source.startsWith("package eval.environment;"))
 					source = "package eval.environment;" + source;
@@ -43,7 +42,7 @@ public class EvalCommand extends Command {
 				if(matcher.find()) {
 					className = matcher.group(1);
 				} else {
-					throw new IllegalArgumentException(Strings.getString("eval.detectClassName", event));
+					throw new IllegalArgumentException(Strings.getString("eval.detectClassName", context.getUser()));
 				}
 
 				className = className.trim();
@@ -56,7 +55,7 @@ public class EvalCommand extends Command {
 
 				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 				StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-				writer = new DiscordChannelWriter(event.getTextChannel()) {
+				writer = new DiscordChannelWriter(context.getTextChannel()) {
 					@Override
 					public void sendAll() {
 						buffer.forEach((channel, strings) -> {
@@ -77,17 +76,17 @@ public class EvalCommand extends Command {
 					RestrictingClassLoader classLoader = new RestrictingClassLoader(new URL[]{root.toURI().toURL()});
 					Class<?> cls = Class.forName("eval.environment." + className, true, classLoader);
 
-					IO.setChannel(event.getTextChannel());
+					IO.setChannel(context.getTextChannel());
 					Method method = cls.getMethod("main", String[].class);
 					method.setAccessible(true);
 					method.invoke(null, new Object[]{new String[]{}});
 				} else {
-					throw new IllegalArgumentException(Strings.getString("eval.compileError", event));
+					throw new IllegalArgumentException(Strings.getString("eval.compileError", context.getUser()));
 				}
 			} catch(InvocationTargetException e) {
-				JDAUtil.sendMessage(Strings.getString("eval.classNotFound", event) + " " + e.getCause().getCause().getMessage(), event.getTextChannel());
+				JDAUtil.sendMessage(Strings.getString("eval.classNotFound", context.getUser()) + " " + e.getCause().getCause().getMessage(), context.getTextChannel());
 			} catch(IllegalArgumentException e) {
-				JDAUtil.sendMessage(e.getMessage(), event.getTextChannel());
+				JDAUtil.sendMessage(e.getMessage(), context.getTextChannel());
 			} catch(Exception e) {
 				e.printStackTrace();
 			} finally {

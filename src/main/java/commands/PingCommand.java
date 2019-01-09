@@ -2,11 +2,9 @@ package commands;
 
 import core.Command;
 import core.CommandDescription;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import core.Context;
 import util.JDAUtil;
 import util.Strings;
-
-import java.util.List;
 
 @CommandDescription(
 		name = "ping",
@@ -14,7 +12,7 @@ import java.util.List;
 )
 public class PingCommand extends Command {
 	@Override
-	public boolean execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(Context context) {
 		JDAUtil.sendMessage(Strings.getString("ping.msg", event).replaceAll("\\[VALUE]", Long.toString(event.getJDA().getPing())), event.getTextChannel());
 		return false;
 	}

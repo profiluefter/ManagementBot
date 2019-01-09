@@ -3,9 +3,9 @@ package commands;
 import core.Command;
 import core.CommandDescription;
 import core.CommandHandler;
+import core.Context;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.Strings;
 
 import java.awt.*;
@@ -20,7 +20,7 @@ import static util.JDAUtil.sendMessage;
 )
 public class HelpCommand extends Command {
 	@Override
-	public boolean execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(Context context) {
 		List<MessageEmbed.Field> fields = new ArrayList<>();
 		for(Command command : CommandHandler.getCommands().values()) { //TODO: Order
 			MessageEmbed.Field field = new MessageEmbed.Field(command.getDescription().name()[0],

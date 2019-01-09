@@ -1,15 +1,13 @@
 package commands;
 
-import config.User;
 import core.Command;
 import core.CommandDescription;
+import core.Context;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import util.Strings;
 
 import java.awt.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static util.JDAUtil.sendEmbed;
@@ -21,16 +19,16 @@ import static util.JDAUtil.sendMessage;
 )
 public class MeCommand extends Command {
 	@Override
-	public boolean execute(List<String> args, MessageReceivedEvent event) {
-		switch(args.size()) {
+	public boolean execute(Context context) {
+		switch(context.getArgs().size()) {
 			case 0:
-				printUserInfo(event);
+				printUserInfo(context);
 				return false;
 			case 3:
 				//noinspection SwitchStatementWithTooFewBranches
-				switch(args.get(0)) {
+				switch(context.getArgs().get(0)) {
 					case "set":
-						return setProperty(args, event);
+						return setProperty(context);
 					default:
 						return true;
 				}
@@ -39,22 +37,22 @@ public class MeCommand extends Command {
 		}
 	}
 
-	private boolean setProperty(List<String> args, MessageReceivedEvent event) {
+	private boolean setProperty(Context context) {
 		//noinspection SwitchStatementWithTooFewBranches
-		switch(args.get(1)) {
+		switch(context.getArgs().get(1)) {
 			case "lang":
-				Strings.Lang lang = Strings.parseLang(args.get(2));
+				Strings.Lang lang = Strings.parseLang(context.getArgs().get(2));
 				if(lang == null) {
 					sendEmbed(Color.RED,
-							Strings.getString("me.invalidArgument", event),
-							Strings.getString("me.invalidArgumentDescription", event).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event)),
-							event.getTextChannel());
+							Strings.getString("me.invalidArgument", context.getUser()),
+							Strings.getString("me.invalidArgumentDescription", context.getUser()).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", context.getUser())),
+							context.getTextChannel());
 				} else {
-					User.loadUser(event).setLanguage(lang);
+					context.getUser().setLanguage(lang);
 					sendEmbed(Color.GREEN,
-							Strings.getString("success", event),
-							Strings.getString("me.changed", event).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", event)).replaceAll("\\[VALUE]", Strings.parseLang(lang)),
-							event.getTextChannel());
+							Strings.getString("success", context.getUser()),
+							Strings.getString("me.changed", context.getUser()).replaceAll("\\[ARGUMENT]", Strings.getString("me.language", context.getUser())).replaceAll("\\[VALUE]", Strings.parseLang(lang)),
+							context.getTextChannel());
 				}
 				return false;
 			default:
@@ -62,14 +60,13 @@ public class MeCommand extends Command {
 		}
 	}
 
-	private void printUserInfo(MessageReceivedEvent event) {
-		User user = User.loadUser(event);
+	private void printUserInfo(Context context) {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.GREEN)
-				.setTitle(event.getAuthor().getName())
-				.addField(Strings.getString("me.discordid", event), String.valueOf(user.getDiscordID()), false)
-				.addField(Strings.getString("me.language", event), Strings.parseLang(user.getLanguage()), false)
-				.addField(Strings.getString("me.roles", event), event.getMember().getRoles().stream().map(Role::getName).collect(Collectors.joining(", ")), false);
-		sendMessage(builder.build(), event.getTextChannel());
+				.setTitle(context.getJDAUser().getName())
+				.addField(Strings.getString("me.discordid", context.getUser()), String.valueOf(context.getUser().getDiscordID()), false)
+				.addField(Strings.getString("me.language", context.getUser()), Strings.parseLang(context.getUser().getLanguage()), false)
+				.addField(Strings.getString("me.roles", context.getUser()), context.getMember().getRoles().stream().map(Role::getName).collect(Collectors.joining(", ")), false);
+		sendMessage(builder.build(), context.getTextChannel());
 	}
 }

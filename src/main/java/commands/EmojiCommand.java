@@ -3,6 +3,7 @@ package commands;
 import config.User;
 import core.Command;
 import core.CommandDescription;
+import core.Context;
 import net.dv8tion.jda.core.entities.Icon;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -25,7 +26,7 @@ import static util.JDAUtil.sendEmbedWithLocalisation;
 		help = "emoji.help"
 )
 public class EmojiCommand extends Command {
-	public boolean execute(List<String> args, MessageReceivedEvent event) {
+	public boolean execute(Context context) {
 		if(event.getMessage().getAttachments().size() == 0 && args.size() == 2) {
 			try {
 				InputStream stream = new URL(args.get(1)).openStream();

@@ -3,9 +3,9 @@ package commands;
 import config.User;
 import core.Command;
 import core.CommandDescription;
+import core.Context;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.util.List;
@@ -20,7 +20,7 @@ import static util.JDAUtil.sendEmbedWithLocalisation;
 public class ClearCommand extends Command {
 
 	@Override
-	public boolean execute(List<String> args, MessageReceivedEvent e) {
+	public boolean execute(Context context) {
 		if(args.size() < 1) {
 			sendEmbedWithLocalisation(Color.RED, "error", "clear.missingCount", e.getTextChannel(), User.loadUser(e.getAuthor().getIdLong()));
 			return false;
